@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 7947744013499832338}
   - component: {fileID: 2579234014722320363}
   - component: {fileID: 7280033333442331305}
+  - component: {fileID: 9126298569558006652}
+  - component: {fileID: 7906938914751711899}
   m_Layer: 8
   m_Name: Croassant
   m_TagString: Untagged
@@ -27,8 +29,8 @@ Transform:
   m_GameObject: {fileID: 7280033333442331304}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -5.2943, y: 0.5, z: 28.366096}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -99,3 +101,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2163f9c10cdc56844b88a56c7bd64da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  breadName: 0
+  bakeForce: 5
+--- !u!54 &9126298569558006652
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7280033333442331304}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &7906938914751711899
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7280033333442331304}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.41569227, y: 0.4413492, z: 1.0544723}
+  m_Center: {x: 0.011097401, y: 0.21967995, z: -0.0039429665}
