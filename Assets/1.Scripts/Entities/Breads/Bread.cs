@@ -28,7 +28,7 @@ public abstract class Bread : MonoBehaviour, IBakeable, IStackable
     }
     public virtual void OnPopped()
     {
-        rb.isKinematic = false;
+        rb.isKinematic = true;
     }
     public abstract void SetBreadType();
 }

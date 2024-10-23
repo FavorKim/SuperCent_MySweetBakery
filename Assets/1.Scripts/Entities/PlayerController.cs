@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEditor.PlayerSettings;
 
 public class PlayerController : MonoBehaviour
 {
@@ -66,7 +67,7 @@ public class PlayerController : MonoBehaviour
         if (breadStack.Count < stackMaxCount)
         {
             bread.OnPushed();
-            StartCoroutine(CorStackAnimation(bread));
+            PlayStackAnimation(bread);
             breadStack.Push(bread);
         }
     }
@@ -74,7 +75,10 @@ public class PlayerController : MonoBehaviour
     {
         if (breadStack.Count > 0)
         {
+
             Bread bread = breadStack.Pop();
+            bread.transform.SetParent(null);
+            bread.transform.position = stackStartPos.position;
             bread.OnPopped();
             return bread;
         }
@@ -84,20 +88,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    IEnumerator CorStackAnimation(Bread bread)
+    private void PlayStackAnimation(Bread bread)
     {
-        bread.transform.position = stackStartPos.position;
-
-        float height = breadStack.Count * stackHeight;
-        Vector3 pos = new Vector3(stackPos.position.x, stackPos.position.y + height, stackPos.position.z);
-
-        while ((bread.transform.position - pos).sqrMagnitude > 0.001f)
-        {
-            pos = new Vector3(stackPos.position.x, stackPos.position.y + height, stackPos.position.z);
-            bread.transform.position = Vector3.Slerp(bread.transform.position, pos, Time.deltaTime * stackSpeed);
-            yield return null;
-        }
-        bread.transform.position = pos;
+        StartCoroutine(CorStackPopAnimation(bread.transform));
+        
         bread.transform.SetParent(stackPos.transform);
     }
 
@@ -111,6 +105,35 @@ public class PlayerController : MonoBehaviour
                 PushBread(bread);
             }
         }
+        if(other.TryGetComponent(out SaleShelves shelves))
+        {
+            Bread bread = PopBread();
+            if (bread != null)
+            {
+                shelves.OnStackBread(bread);
+            }
+        }
     }
 
+    private IEnumerator CorStackPopAnimation(Transform bread)
+    {
+
+        bread.transform.position = stackStartPos.position;
+
+        float height = breadStack.Count * stackHeight;
+        Vector3 pos = new Vector3(stackPos.position.x, stackPos.position.y + height, stackPos.position.z);
+        
+        while ((bread.transform.position - pos).sqrMagnitude > 0.001f)
+        {
+            pos = new Vector3(stackPos.position.x, stackPos.position.y + height, stackPos.position.z);
+            bread.transform.position = Vector3.Slerp(bread.transform.position, pos, Time.deltaTime * stackSpeed);
+            bread.transform.localRotation = Quaternion.Slerp(bread.transform.rotation, Quaternion.identity, Time.deltaTime * stackSpeed);
+
+            yield return null;
+        }
+        bread.transform.position = pos;
+        bread.localRotation = Quaternion.identity;
+    }
+    
+    
 }
