@@ -1,13 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private ControllStick stick;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float rotSpeed;
+    private NavMeshAgent agent;
 
+    private void Awake()
+    {
+        agent = GetComponent<NavMeshAgent>();
+    }
 
     private void Update()
     {
@@ -43,6 +49,6 @@ public class PlayerController : MonoBehaviour
         }
 
         // 플레이어 이동
-        transform.position += direction * moveSpeed * Time.deltaTime;
+        agent.Move(direction * moveSpeed * Time.deltaTime);
     }
 }
