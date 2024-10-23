@@ -7,7 +7,7 @@ public enum BreadType
     CROASSANT,
 }
 
-public abstract class Bread : MonoBehaviour, IBakeable
+public abstract class Bread : MonoBehaviour, IBakeable, IStackable
 {
     public BreadType breadName;
     protected Rigidbody rb;
@@ -21,6 +21,14 @@ public abstract class Bread : MonoBehaviour, IBakeable
     public virtual void OnBaked() 
     {
         rb.AddForce(transform.forward * bakeForce, ForceMode.Impulse);
+    }
+    public virtual void OnPushed()
+    {
+        rb.isKinematic = true;
+    }
+    public virtual void OnPopped()
+    {
+        rb.isKinematic = false;
     }
     public abstract void SetBreadType();
 }

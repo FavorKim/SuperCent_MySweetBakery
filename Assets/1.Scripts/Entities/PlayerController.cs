@@ -6,9 +6,18 @@ using UnityEngine.AI;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private ControllStick stick;
+    [SerializeField] private Transform stackPos;
+    [SerializeField] private Transform stackStartPos;
+    private NavMeshAgent agent;
+
     [SerializeField] private float moveSpeed;
     [SerializeField] private float rotSpeed;
-    private NavMeshAgent agent;
+
+    private Stack<Bread> breadStack = new Stack<Bread>();
+    private float stackHeight = 0.3f;
+    [SerializeField] private float stackSpeed = 0.5f;
+    [SerializeField] private int stackMaxCount = 8;
+
 
     private void Awake()
     {
@@ -51,4 +60,57 @@ public class PlayerController : MonoBehaviour
         // 플레이어 이동
         agent.Move(direction * moveSpeed * Time.deltaTime);
     }
+
+    public void PushBread(Bread bread)
+    {
+        if (breadStack.Count < stackMaxCount)
+        {
+            bread.OnPushed();
+            StartCoroutine(CorStackAnimation(bread));
+            breadStack.Push(bread);
+        }
+    }
+    public Bread PopBread()
+    {
+        if (breadStack.Count > 0)
+        {
+            Bread bread = breadStack.Pop();
+            bread.OnPopped();
+            return bread;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    IEnumerator CorStackAnimation(Bread bread)
+    {
+        bread.transform.position = stackStartPos.position;
+
+        float height = breadStack.Count * stackHeight;
+        Vector3 pos = new Vector3(stackPos.position.x, stackPos.position.y + height, stackPos.position.z);
+
+        while ((bread.transform.position - pos).sqrMagnitude > 0.001f)
+        {
+            pos = new Vector3(stackPos.position.x, stackPos.position.y + height, stackPos.position.z);
+            bread.transform.position = Vector3.Slerp(bread.transform.position, pos, Time.deltaTime * stackSpeed);
+            yield return null;
+        }
+        bread.transform.position = pos;
+        bread.transform.SetParent(stackPos.transform);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if(other.TryGetComponent(out BreadStorage storage))
+        {
+            Bread bread = storage.OnPopBread();
+            if (bread != null)
+            {
+                PushBread(bread);
+            }
+        }
+    }
+
 }

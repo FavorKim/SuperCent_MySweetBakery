@@ -5,12 +5,13 @@ using UnityEngine;
 public class BreadMaker : MonoBehaviour
 {
     [SerializeField] private BreadType BreadType;
+
     [SerializeField] private Transform spawnPos;
+    [SerializeField] private BreadStorage storage;
 
     [SerializeField] private float bakeSpeed = 1.0f;
 
-    [SerializeField] private int StorageSize = 8;
-    [SerializeField] private int storedBreadCount;
+    
 
     private void Start()
     {
@@ -21,7 +22,7 @@ public class BreadMaker : MonoBehaviour
     {
         while (true)
         {
-            if (storedBreadCount < StorageSize)
+            if (storage.CanPush())
             {
                 Bread bread = GenerateBread();
 
@@ -49,6 +50,9 @@ public class BreadMaker : MonoBehaviour
     private void OnCompleteBake(Bread bread)
     {
         bread.OnBaked();
-        storedBreadCount++;
+
+        storage.OnStoreBread(bread);
     }
+
+
 }
