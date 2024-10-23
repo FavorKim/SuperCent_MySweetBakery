@@ -57,4 +57,17 @@ public class ObjectPool <T>  where T : MonoBehaviour
         return obj;
     }
 
+    public void ClearPool()
+    {
+
+        if(pool.Count == 0) return;
+
+        foreach (var go in pool)
+        {
+            GameObject.Destroy(go);
+        }
+
+        pool.Clear();
+    }
+
 }
