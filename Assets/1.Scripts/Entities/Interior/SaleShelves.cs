@@ -41,4 +41,14 @@ public class SaleShelves : MonoBehaviour
         bread.transform.position = toward;
         bread.localRotation = firstPos.rotation;
     }
+
+    public Bread PopBread()
+    {
+        if (breadStacks.Count > 0)
+            return breadStacks.Pop();
+        else
+        {
+            return null;
+        }
+    }
 }
