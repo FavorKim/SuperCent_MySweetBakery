@@ -5,42 +5,38 @@ using UnityEngine;
 public class SaleShelves : MonoBehaviour
 {
     [SerializeField] private Transform firstPos;
+
+    [SerializeField] private int maxStoreCount = 8;
+    
     [SerializeField] private float xGap;
     [SerializeField] private float zGap;
+    [SerializeField] private float yGap = 0.5f;
 
     [SerializeField] private float stackSpeed = 20.0f;
 
-    Stack<Bread> breadStacks = new Stack<Bread>();
+    private Stack<Bread> breadStacks = new Stack<Bread>();
+
 
     public void OnStackBread(Bread bread)
     {
-        Vector3 pos = GetPosToStack();
-
-        StartCoroutine(CorStackAnimation(bread.transform, pos, stackSpeed));
-
-        breadStacks.Push(bread);
+        if (breadStacks.Count < maxStoreCount)
+        {
+            breadStacks.Push(bread);
+            bread.transform.SetParent(firstPos);
+        }
     }
 
-    private Vector3 GetPosToStack()
+    public Vector3 GetPosToStack()
     {
-        int index = breadStacks.Count;
+        int index = breadStacks.Count - 1;
         float xGap = (index % 2) * this.xGap;
         float zGap = (index / 2) * this.zGap;
-        Vector3 pos = new Vector3(firstPos.position.x + xGap, firstPos.position.y, firstPos.position.z - zGap);
+        float yGap = (index / 2) * this.yGap;
+        Vector3 pos = new Vector3(firstPos.position.x + xGap, firstPos.position.y - yGap, firstPos.position.z - zGap);
         return pos;
     }
 
-    private IEnumerator CorStackAnimation(Transform bread, Vector3 toward, float stackSpeed)
-    {
-        while ((bread.transform.position - toward).sqrMagnitude > 0.001f)
-        {
-            bread.transform.position = Vector3.Slerp(bread.transform.position, toward, Time.deltaTime * stackSpeed);
-            bread.transform.localRotation = Quaternion.Slerp(bread.transform.rotation, firstPos.rotation, Time.deltaTime * stackSpeed);
-            yield return null;
-        }
-        bread.transform.position = toward;
-        bread.localRotation = firstPos.rotation;
-    }
+    
 
     public Bread PopBread()
     {
@@ -50,5 +46,9 @@ public class SaleShelves : MonoBehaviour
         {
             return null;
         }
+    }
+    public bool IsStackable()
+    {
+        return breadStacks.Count < maxStoreCount;
     }
 }

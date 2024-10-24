@@ -1419,7 +1419,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1025060815}
+  - component: {fileID: 1025060817}
   - component: {fileID: 1025060814}
   - component: {fileID: 1025060813}
   - component: {fileID: 1025060812}
@@ -1509,27 +1509,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1025060809}
   m_Mesh: {fileID: -4487237083148246214, guid: c4d596ebbc4a56546965afda8f8098ac, type: 3}
---- !u!224 &1025060815
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1025060809}
-  m_LocalRotation: {x: -0.25065324, y: -0, z: -0, w: 0.96807694}
-  m_LocalPosition: {x: 0, y: 0, z: 7.5614}
-  m_LocalScale: {x: 1, y: 1, z: 1.4727}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1027661316}
-  m_Father: {fileID: 1587359162}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: -29.032, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -7.6, y: 1.15}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1025060816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1543,9 +1522,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firstPos: {fileID: 1027661316}
+  maxStoreCount: 8
   xGap: 0.78
-  zGap: 0.6
+  zGap: 0.35
+  yGap: 0.15
   stackSpeed: 20
+--- !u!4 &1025060817
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1025060809}
+  m_LocalRotation: {x: -0.16447717, y: -0, z: -0, w: 0.9863809}
+  m_LocalPosition: {x: -7.6, y: 0.87, z: 7.5614}
+  m_LocalScale: {x: 1, y: 1, z: 1.4727}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1027661316}
+  m_Father: {fileID: 1587359162}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: -18.934, y: 0, z: 0}
 --- !u!1 &1027661315
 GameObject:
   m_ObjectHideFlags: 0
@@ -1574,7 +1571,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 1025060815}
+  m_Father: {fileID: 1025060817}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1070664448
@@ -1963,7 +1960,7 @@ Transform:
   - {fileID: 422921861}
   - {fileID: 425145863}
   - {fileID: 715318409}
-  - {fileID: 1025060815}
+  - {fileID: 1025060817}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2476,6 +2473,10 @@ PrefabInstance:
       propertyPath: stick
       value: 
       objectReference: {fileID: 743142605}
+    - target: {fileID: 1447626231136860576, guid: 7dc5875597cb9424088f1231017ad193, type: 3}
+      propertyPath: stackDelay
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 1447626231136860576, guid: 7dc5875597cb9424088f1231017ad193, type: 3}
       propertyPath: stackSpeed
       value: 20
