@@ -8,7 +8,10 @@ public class CustomerNeedsManager
     public void EnqueueNeeds(CustomerNeeds customerNeeds)
     {
         if (needsQueue.Count == 0)
+        {
             currentNeeds = customerNeeds;
+            currentNeeds.OnEnter();
+        }
 
         needsQueue.Enqueue(customerNeeds);
     }
@@ -27,5 +30,11 @@ public class CustomerNeedsManager
         currentNeeds.OnComplete();
         currentNeeds = needsQueue.Dequeue();
         currentNeeds.OnEnter();
+    }
+
+    public void ResetCustomerNeedsManager()
+    {
+        needsQueue.Clear();
+        currentNeeds = null;
     }
 }

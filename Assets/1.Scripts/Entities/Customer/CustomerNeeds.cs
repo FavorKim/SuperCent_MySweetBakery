@@ -1,3 +1,4 @@
+using UnityEngine;
 
 public interface CustomerNeeds
 {
@@ -16,13 +17,15 @@ public class NeedBread : CustomerNeeds
 
     public void OnEnter()
     {
+        customer.SetBreadCountRandomly();
 
+        Vector3 salesPos = AINavigator.Instance.GetSaleShelvesWaitingPos();
+        customer.AINavMoveToward(salesPos);
     }
     public bool EvaluateCompleteCondition()
     {
-        return customer.breadCount == 0;
+        return customer.BreadCount == 0;
     }
-
     public void OnComplete()
     {
 
@@ -39,11 +42,11 @@ public class NeedPay : CustomerNeeds
 
     public void OnEnter()
     {
-
+        
     }
     public bool EvaluateCompleteCondition()
     {
-        return customer.isReadyToPay;
+        return customer.IsReadyToPay;
     }
 
     public void OnComplete()
