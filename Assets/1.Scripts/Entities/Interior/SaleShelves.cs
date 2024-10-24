@@ -15,7 +15,7 @@ public class SaleShelves : MonoBehaviour
     [SerializeField] private float stackSpeed = 20.0f;
 
     private Stack<Bread> breadStacks = new Stack<Bread>();
-
+    
 
     public void OnStackBread(Bread bread)
     {
