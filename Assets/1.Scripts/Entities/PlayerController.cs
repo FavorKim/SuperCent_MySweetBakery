@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int stackMaxCount = 8;
     private bool isStakcing = false;
 
+    private int stackCount => breadStack.Count;
+
     private event Action<Bread> OnPushBread;
     private event Action<Bread> OnPopBread;
     private event Action<Vector3> OnMove;
@@ -119,6 +121,31 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+
+    private void OnTriggerStorage(BreadStorage storage)
+    {
+        if (!isStakcing)
+        {
+            Bread bread = storage.OnPopBread();
+            if (bread != null)
+            {
+                if (breadStack.Count < stackMaxCount)
+                    OnPushBread.Invoke(bread);
+            }
+        }
+    }
+    private void OnTriggerSaleShelves(SaleShelves shelves)
+    {
+        if (shelves.IsStackable() && !isStakcing)
+        {
+            Bread bread = PopBread();
+            if (bread != null)
+            {
+                shelves.OnStackBread(bread);
+                StartCoroutine(CorStackAnim(bread.transform, GetStackStartPos, shelves.GetPosToStack));
+            }
+        }
+    }
     #region Method
 
     public Bread PopBread()
@@ -135,6 +162,7 @@ public class PlayerController : MonoBehaviour
             return null;
         }
     }
+
     private Vector3 GetMoveDir()
     {
         Vector2 dir = stick.GetInputVector();
@@ -154,6 +182,7 @@ public class PlayerController : MonoBehaviour
         Vector3 startPos = new Vector3(stackStartPos.position.x, stackStartPos.position.y + yGap, stackStartPos.position.z);
         return startPos;
     }
+
     private void PlayerMove()
     {
         Vector3 moveDir = GetMoveDir();
@@ -168,27 +197,11 @@ public class PlayerController : MonoBehaviour
     {
         if (other.TryGetComponent(out BreadStorage storage))
         {
-            if (!isStakcing)
-            {
-                Bread bread = storage.OnPopBread();
-                if (bread != null)
-                {
-                    if (breadStack.Count < stackMaxCount)
-                        OnPushBread.Invoke(bread);
-                }
-            }
+            OnTriggerStorage(storage);
         }
         if (other.TryGetComponent(out SaleShelves shelves))
         {
-            if (shelves.IsStackable() && !isStakcing)
-            {
-                Bread bread = PopBread();
-                if (bread != null)
-                {
-                    shelves.OnStackBread(bread);
-                    StartCoroutine(CorStackAnim(bread.transform, GetStackStartPos, shelves.GetPosToStack));
-                }
-            }
+            OnTriggerSaleShelves(shelves);
         }
     }
 
