@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,6 +8,7 @@ public class Customer : BreadStacker
 {
     private NavMeshAgent agent;
     private CustomerNeedsManager needsManager;
+    public CustomerUIManager UiManager { get; private set; }
 
     [SerializeField] private float rotSpeed = 20.0f;
     
@@ -14,7 +16,7 @@ public class Customer : BreadStacker
 
 
     [SerializeField] private int breadCountRandomRange = 3;
-    public int BreadCount { get; private set; }
+    public int BreadCountToNeed { get; private set; }
     
     // 나중에 테이블 매니저가 나오면 교체할 가용 테이블이 있는지에 대한 변수
     public bool isTableAvailable = false;
@@ -44,6 +46,7 @@ public class Customer : BreadStacker
     {
         base.Awake();
         agent = GetComponent<NavMeshAgent>();
+        UiManager = GetComponentInChildren<CustomerUIManager>();
     }
 
     protected override void OnEnable()
@@ -53,11 +56,16 @@ public class Customer : BreadStacker
             needsManager = new CustomerNeedsManager();
         needsManager.EnqueueNeeds(new NeedBread(this));
         needsManager.EnqueueNeeds(new NeedPay(this));
+
+        OnPushBread += OnPushBread_SetCount;
     }
     protected override void OnDisable()
     {
         base.OnDisable();
         needsManager.ResetCustomerNeedsManager();
+
+        OnPushBread -= OnPushBread_SetCount;
+
     }
 
     private void Update()
@@ -69,7 +77,7 @@ public class Customer : BreadStacker
 
     protected override void OnTriggerSaleShelves(SaleShelves shelves)
     {
-        if (!isStakcing)
+        if (!isStakcing && stackCount<stackMaxCount)
         {
             Bread bread = shelves.PopBread();
             if (bread != null)
@@ -79,6 +87,7 @@ public class Customer : BreadStacker
         }
     }
 
+
     public void AINavMoveToward(Vector3 pos)
     {
         agent.SetDestination(pos);
@@ -86,7 +95,8 @@ public class Customer : BreadStacker
 
     public void SetBreadCountRandomly()
     {
-        BreadCount = Random.Range(0, breadCountRandomRange) + 1;
+        BreadCountToNeed = Random.Range(0, breadCountRandomRange) + 1;
+        stackMaxCount = BreadCountToNeed;
     }
 
     private void SetAnimatorOnMove()
@@ -112,6 +122,38 @@ public class Customer : BreadStacker
     public void RotateToward(Vector3 direction)
     {
         StartCoroutine(CorRotateToward(direction));
+    }
+
+
+    public void OnReached_Bread()
+    {
+        UiManager.SetActiveUI(UIType.BREAD, true);
+        
+        BreadCountToNeed = stackMaxCount - stackCount;
+        UiManager.SetBreadText($"{BreadCountToNeed}");
+        isStakcing = false;
+    }
+
+    private void OnPushBread_SetCount(Bread bread)
+    {
+        BreadCountToNeed = stackMaxCount - stackCount;
+
+        UiManager.SetBreadText($"{BreadCountToNeed}");
+    }
+
+    public void OnEnter_Bread()
+    {
+        isStakcing = true;
+    }
+
+    public void OnComplete_Bread()
+    {
+        UiManager.SetActiveUI(UIType.BREAD, false);
+    }
+
+    public void OnEnter_Pay()
+    {
+        UiManager.SetActiveUI(UIType.PAY, true);
     }
 
     private IEnumerator CorRotateToward(Vector3 direction)

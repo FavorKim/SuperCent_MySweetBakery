@@ -2322,6 +2322,22 @@ Transform:
   m_Father: {fileID: 1025060817}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2048323670 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7816032908802975698, guid: 1ead6bee1964c084784407afe383dfdf, type: 3}
+  m_PrefabInstance: {fileID: 1833280231019774599}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2093078813 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6070854638521284986, guid: 1ead6bee1964c084784407afe383dfdf, type: 3}
+  m_PrefabInstance: {fileID: 1833280231019774599}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &543450651924954256
 Transform:
   m_ObjectHideFlags: 0
@@ -2658,6 +2674,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Customer
       objectReference: {fileID: 0}
+    - target: {fileID: 3416265835873468046, guid: 1ead6bee1964c084784407afe383dfdf, type: 3}
+      propertyPath: PayUI
+      value: 
+      objectReference: {fileID: 2841497951537904629}
+    - target: {fileID: 3416265835873468046, guid: 1ead6bee1964c084784407afe383dfdf, type: 3}
+      propertyPath: BreadUI
+      value: 
+      objectReference: {fileID: 2048323670}
+    - target: {fileID: 3416265835873468046, guid: 1ead6bee1964c084784407afe383dfdf, type: 3}
+      propertyPath: Txt_Bread
+      value: 
+      objectReference: {fileID: 2093078813}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ead6bee1964c084784407afe383dfdf, type: 3}
 --- !u!4 &2780689097974505844
@@ -2676,6 +2704,11 @@ Transform:
   m_Father: {fileID: 543450653400313770}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2841497951537904629 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4476043653277858162, guid: 1ead6bee1964c084784407afe383dfdf, type: 3}
+  m_PrefabInstance: {fileID: 1833280231019774599}
+  m_PrefabAsset: {fileID: 0}
 --- !u!33 &3469287837923275573
 MeshFilter:
   m_ObjectHideFlags: 0

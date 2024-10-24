@@ -25,16 +25,18 @@ public class NeedBread : CustomerNeeds
     }
     public bool EvaluateCompleteCondition()
     {
-        return customer.BreadCount == 0;
+        return customer.BreadCountToNeed == 0;
     }
     public void OnReached()
     {
         Vector3 shelvPos = AINavigator.Instance.GetSaleShelvesPos();
         customer.RotateToward(shelvPos);
+        customer.OnReached_Bread();
+        
     }
     public void OnComplete()
     {
-        
+        customer.OnComplete_Bread();
     }
 }
 
@@ -48,7 +50,7 @@ public class NeedPay : CustomerNeeds
 
     public void OnEnter()
     {
-        
+        customer.OnEnter_Pay();
     }
     public bool EvaluateCompleteCondition()
     {

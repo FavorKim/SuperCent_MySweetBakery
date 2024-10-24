@@ -84,7 +84,6 @@ public class PlayerController : BreadStacker
             Bread bread = storage.OnPopBread();
             if (bread != null)
             {
-                if (stackCount < stackMaxCount)
                     InvokeOnPushBread(bread);
             }
         }
