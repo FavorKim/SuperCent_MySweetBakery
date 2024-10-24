@@ -3,6 +3,7 @@ using UnityEngine;
 public interface CustomerNeeds
 {
     void OnEnter();
+    void OnReached();
     bool EvaluateCompleteCondition();
     void OnComplete();
 }
@@ -19,16 +20,21 @@ public class NeedBread : CustomerNeeds
     {
         customer.SetBreadCountRandomly();
 
-        Vector3 salesPos = AINavigator.Instance.GetSaleShelvesWaitingPos();
-        customer.AINavMoveToward(salesPos);
+        Vector3 destination = AINavigator.Instance.GetSaleShelvesWaitingPos();
+        customer.AINavMoveToward(destination);
     }
     public bool EvaluateCompleteCondition()
     {
         return customer.BreadCount == 0;
     }
+    public void OnReached()
+    {
+        Vector3 shelvPos = AINavigator.Instance.GetSaleShelvesPos();
+        customer.RotateToward(shelvPos);
+    }
     public void OnComplete()
     {
-
+        
     }
 }
 
@@ -47,6 +53,10 @@ public class NeedPay : CustomerNeeds
     public bool EvaluateCompleteCondition()
     {
         return customer.IsReadyToPay;
+    }
+    public void OnReached()
+    {
+
     }
 
     public void OnComplete()
@@ -72,6 +82,10 @@ public class NeedTable : CustomerNeeds
         return customer.isTableAvailable;
     }
 
+    public void OnReached()
+    {
+
+    }
     public void OnComplete()
     {
 

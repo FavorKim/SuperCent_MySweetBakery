@@ -112,7 +112,8 @@ public class BreadStacker : MonoBehaviour
 
     protected void InvokeOnPushBread(Bread bread)
     {
-        OnPushBread.Invoke(bread);
+        if (stackCount < stackMaxCount)
+            OnPushBread.Invoke(bread);
     }
     protected void InvokeOnPopBread(Bread bread)
     {

@@ -37,4 +37,8 @@ public class CustomerNeedsManager
         needsQueue.Clear();
         currentNeeds = null;
     }
+    public void OnReached()
+    {
+        currentNeeds.OnReached();
+    }
 }

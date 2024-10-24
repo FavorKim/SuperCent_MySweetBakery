@@ -18,5 +18,9 @@ public class AINavigator : Singleton<AINavigator>
             return Vector3.zero;
         }
     }
+    public Vector3 GetSaleShelvesPos()
+    {
+        return shelves.transform.position;
+    }
 
 }
