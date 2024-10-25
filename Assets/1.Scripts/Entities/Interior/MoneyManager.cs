@@ -57,6 +57,7 @@ public class MoneyManager : MonoBehaviour
         }
         money.transform.position = destPos;
         MoneyPoolManager.Instance.ReturnMoney(money);
+        MoneyModel.Instance.PlusGold(1);
     }
 
 

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using TMPro;
 using UnityEngine;
 
@@ -19,6 +20,7 @@ public class CustomerUIManager : MonoBehaviour
 
     private Dictionary<UIType, GameObject> uITypeDict = new Dictionary<UIType, GameObject>();
 
+    private StringBuilder BreadTextSB = new StringBuilder();
     public Dictionary<UIType,GameObject> UITypeDict 
     {
         get
@@ -32,7 +34,9 @@ public class CustomerUIManager : MonoBehaviour
 
     public void SetBreadText(string text)
     {
-        Txt_Bread.text = text;
+        BreadTextSB.Clear();
+        BreadTextSB.Append(text);
+        Txt_Bread.text = BreadTextSB.ToString();
     }
 
     public void SetActiveUI(UIType type, bool isActive)
