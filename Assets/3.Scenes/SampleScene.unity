@@ -179,6 +179,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 89519322}
+  - component: {fileID: 89519323}
+  - component: {fileID: 89519324}
   m_Layer: 0
   m_Name: Moneys
   m_TagString: Untagged
@@ -194,7 +196,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 89519321}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.26, y: 0, z: -0.49}
+  m_LocalPosition: {x: 3.03, y: 0, z: -0.42}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -202,6 +204,32 @@ Transform:
   m_Father: {fileID: 425145863}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &89519323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 89519321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 292d9bb7c31af2a42b17e273ffd4289c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moneyFirstPos: {fileID: 1171857025}
+--- !u!65 &89519324
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 89519321}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.6010976, y: 1, z: 1.6892185}
+  m_Center: {x: 0.05770564, y: 0, z: 0.058382988}
 --- !u!1 &91758080
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,11 +715,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firstPos: {fileID: 1877846295}
-  lineGap: 1
-  isPayable: 0
   paperBag: {fileID: 1096876932}
-  Gap: {x: -0.8, y: 0.5, z: 0.5}
-  moneyFirstPos: {fileID: 1171857025}
+  lineGap: 1
+  moneyManager: {fileID: 89519323}
+  isPayable: 0
 --- !u!65 &425145865
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2126,7 +2153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa27c2d38b8c95429ec467501d2d4e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moneyPrefab: {fileID: 1021405347015165638, guid: da216f1f776aa4cc384a914e3c97fc56, type: 3}
+  moneyPrefab: {fileID: 8796868479785926450, guid: 16ea03fb43a7cf142b827cad62cbe393, type: 3}
   poolCount: 100
 --- !u!4 &1233932874
 Transform:
@@ -2711,6 +2738,7 @@ GameObject:
   - component: {fileID: 543450652346904293}
   - component: {fileID: 3469287838277198144}
   - component: {fileID: 1711813854281373066}
+  - component: {fileID: 3469287838277198145}
   m_Layer: 0
   m_Name: BreadOven
   m_TagString: Untagged
@@ -3144,6 +3172,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919132148360229983}
   m_Mesh: {fileID: -8288138162313541091, guid: be3eb45581d0c694e880535f122c5014, type: 3}
+--- !u!65 &3469287838277198145
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148360229983}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.212931, y: 1.5463346, z: 1.9896374}
+  m_Center: {x: -0.10646546, y: 0.5499229, z: -0.0051813126}
 --- !u!1 &3660128815211103724
 GameObject:
   m_ObjectHideFlags: 0

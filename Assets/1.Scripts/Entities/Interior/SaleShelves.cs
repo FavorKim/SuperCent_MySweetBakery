@@ -18,6 +18,10 @@ public class WaitingPosition
         isAvailable = false;
         return position;
     }
+    public void SetAvailable(bool isAvailable)
+    {
+        this.isAvailable = isAvailable;
+    }
 }
 
 public class SaleShelves : MonoBehaviour
@@ -45,7 +49,7 @@ public class SaleShelves : MonoBehaviour
         }
     }
 
-    public Vector3 GetWaitingPositionAvailable()
+    public WaitingPosition GetWaitingPositionAvailable()
     {
         if( waitingPositionsList.Count == 0)
         {
@@ -56,11 +60,11 @@ public class SaleShelves : MonoBehaviour
         {
             if (w.isAvailable) 
             {
-                return w.GetPosition();
+                return w;
             }
         }
 
-        return Vector3.zero;
+        return null;
     } 
 
     public void OnStackBread(Bread bread)
