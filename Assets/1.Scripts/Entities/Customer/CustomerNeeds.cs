@@ -21,8 +21,8 @@ public class NeedBread : CustomerNeeds
     {
         customer.SetBreadCountRandomly();
 
-        Vector3 destination = DestinationManager.Instance.GetSaleShelvesWaitingPos();
-        customer.AINavMoveToward(destination);
+        customer.posToGo = DestinationManager.Instance.GetSaleShelvesWaitingPos();
+        customer.AINavMoveToward(customer.posToGo.GetPosition());
     }
     public bool EvaluateCompleteCondition()
     {
@@ -153,6 +153,6 @@ public class GoBack : CustomerNeeds
     }
     public void OnComplete()
     {
-        CustomerPoolManager.Instance.ReturnCustomer(customer);
+        customer.OnEndCustomerAI();
     }
 }

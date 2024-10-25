@@ -4,7 +4,7 @@ public class CustomerNeedsManager
 {
     private Queue<CustomerNeeds> needsQueue = new Queue<CustomerNeeds>();
     private CustomerNeeds currentNeeds;
-    
+
     public void EnqueueNeeds(CustomerNeeds customerNeeds)
     {
 
@@ -30,10 +30,9 @@ public class CustomerNeedsManager
     {
         currentNeeds.OnComplete();
 
-
-        var nextNeeds = needsQueue.Dequeue();
-        if (nextNeeds != null)
+        if (needsQueue.Count > 0)
         {
+            var nextNeeds = needsQueue.Dequeue();
             while (nextNeeds == currentNeeds)
             {
                 nextNeeds = needsQueue.Dequeue();

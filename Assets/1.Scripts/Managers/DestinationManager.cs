@@ -7,16 +7,17 @@ public class DestinationManager : Singleton<DestinationManager>
 {
     [SerializeField] private SaleShelves shelves;
     [SerializeField] private Transform entrance;
-    public Vector3 GetSaleShelvesWaitingPos()
+    public WaitingPosition GetSaleShelvesWaitingPos()
     {
-        Vector3 dest = shelves.GetWaitingPositionAvailable();
-        if (dest != Vector3.zero)
-            return dest;
-        else
+        WaitingPosition dest = shelves.GetWaitingPositionAvailable();
+
+        if (dest == null)
         {
-            Debug.LogError("진열대 빈 자리 없음");
-            return Vector3.zero;
+            Debug.LogError("빈자리 없음");
+            return null;
         }
+        else
+            return dest;
     }
     public Vector3 GetSaleShelvesPos()
     {

@@ -8,7 +8,8 @@ public class Customer : BreadStacker
 {
     private NavMeshAgent agent;
     private CustomerNeedsManager needsManager;
-    public CustomerUIManager UiManager { get; private set; }
+    public WaitingPosition posToGo;
+    public CustomerUIManager UIManager { get; private set; }
 
     [SerializeField] private float rotSpeed = 20.0f;
 
@@ -47,7 +48,7 @@ public class Customer : BreadStacker
     {
         base.Awake();
         agent = GetComponent<NavMeshAgent>();
-        UiManager = GetComponentInChildren<CustomerUIManager>();
+        UIManager = GetComponentInChildren<CustomerUIManager>();
     }
 
     protected override void OnEnable()
@@ -77,21 +78,24 @@ public class Customer : BreadStacker
 
     public void OnEndCustomerAI()
     {
+
         needsManager.ResetCustomerNeedsManager();
         priceToPay = 0;
         agent.isStopped = true;
+        CustomerPoolManager.Instance.ReturnCustomer(this);
     }
 
     private void Update()
     {
         needsManager.RunNeedsQueue();
+        
         SetAnimatorOnMove();
     }
 
 
     protected override void OnTriggerStay_SaleShelves(SaleShelves shelves)
     {
-        if (!isStakcing && BreadCountToNeed > 0)
+        if (!isStakcing && BreadCountToNeed > 0 && IsReached)
         {
             Bread bread = shelves.PopBread();
             if (bread != null)
@@ -142,10 +146,10 @@ public class Customer : BreadStacker
 
     public void OnReached_Bread()
     {
-        UiManager.SetActiveUI(UIType.BREAD, true);
+        UIManager.SetActiveUI(UIType.BREAD, true);
 
         BreadCountToNeed = stackMaxCount - stackCount;
-        UiManager.SetBreadText($"{BreadCountToNeed}");
+        UIManager.SetBreadText($"{BreadCountToNeed}");
         isStakcing = false;
     }
 
@@ -153,7 +157,7 @@ public class Customer : BreadStacker
     {
         BreadCountToNeed = stackMaxCount - stackCount;
 
-        UiManager.SetBreadText($"{BreadCountToNeed}");
+        UIManager.SetBreadText($"{BreadCountToNeed}");
     }
 
     public void OnEnter_Bread()
@@ -163,13 +167,15 @@ public class Customer : BreadStacker
 
     public void OnComplete_Bread()
     {
-        UiManager.SetActiveUI(UIType.BREAD, false);
+        UIManager.SetActiveUI(UIType.BREAD, false);
+        posToGo.SetAvailable(true);
+        posToGo = null;
     }
 
 
     public void OnReached_Pay()
     {
-        UiManager.SetActiveUI(UIType.PAY, true);
+        UIManager.SetActiveUI(UIType.PAY, true);
         transform.rotation = Quaternion.LookRotation(Vector3.back);
         Counter.Instance.EnqueueCustomer(this);
     }
