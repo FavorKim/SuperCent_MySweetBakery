@@ -77,7 +77,7 @@ public class PlayerController : BreadStacker
     #endregion
 
 
-    protected override void OnTriggerStorage(BreadStorage storage)
+    protected override void OnTriggerStay_Storage(BreadStorage storage)
     {
         if (!isStakcing)
         {
@@ -88,7 +88,7 @@ public class PlayerController : BreadStacker
             }
         }
     }
-    protected override void OnTriggerSaleShelves(SaleShelves shelves)
+    protected override void OnTriggerStay_SaleShelves(SaleShelves shelves)
     {
         if (shelves.IsStackable() && !isStakcing)
         {
@@ -100,6 +100,8 @@ public class PlayerController : BreadStacker
             }
         }
     }
+
+  
     #region Method
 
    
@@ -121,9 +123,7 @@ public class PlayerController : BreadStacker
 
     #endregion
 
-   
-
-
     
+
 
 }

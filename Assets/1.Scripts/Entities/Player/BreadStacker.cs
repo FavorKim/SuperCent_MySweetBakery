@@ -12,13 +12,13 @@ public class BreadStacker : MonoBehaviour
 
     private Stack<Bread> breadStack = new Stack<Bread>();
     private float stackHeight = 0.3f;
-    [SerializeField] private float stackDelay = 0.5f;
+    private float stackDelay = 0.1f;
     [SerializeField] protected int stackMaxCount = 8;
     protected bool isStakcing = false;
 
     [SerializeField] private Transform stackPos;
     [SerializeField] private Transform stackStartPos;
-    protected int stackCount => breadStack.Count;
+    public int stackCount => breadStack.Count;
 
     protected virtual void OnEnable()
     {
@@ -71,15 +71,9 @@ public class BreadStacker : MonoBehaviour
     }
 
 
-    protected virtual void OnTriggerStorage(BreadStorage storage)
-    {
-
-    }
-    protected virtual void OnTriggerSaleShelves(SaleShelves shelves)
-    {
-
-    }
-
+    protected virtual void OnTriggerStay_Storage(BreadStorage storage) { }
+    protected virtual void OnTriggerStay_SaleShelves(SaleShelves shelves) { }
+    
 
     public Bread PopBread()
     {
@@ -144,12 +138,15 @@ public class BreadStacker : MonoBehaviour
     {
         if (other.TryGetComponent(out BreadStorage storage))
         {
-            OnTriggerStorage(storage);
+            OnTriggerStay_Storage(storage);
         }
         if (other.TryGetComponent(out SaleShelves shelves))
         {
-            OnTriggerSaleShelves(shelves);
+            OnTriggerStay_SaleShelves(shelves);
         }
+        
     }
+   
+
 
 }

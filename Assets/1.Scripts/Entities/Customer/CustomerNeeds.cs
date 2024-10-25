@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public interface CustomerNeeds
 {
@@ -30,7 +31,8 @@ public class NeedBread : CustomerNeeds
     public void OnReached()
     {
         Vector3 shelvPos = AINavigator.Instance.GetSaleShelvesPos();
-        customer.RotateToward(shelvPos);
+        customer.transform.rotation = Quaternion.LookRotation(shelvPos);
+
         customer.OnReached_Bread();
         
     }
@@ -50,7 +52,10 @@ public class NeedPay : CustomerNeeds
 
     public void OnEnter()
     {
-        customer.OnEnter_Pay();
+        Vector3 posToWait = Counter.Instance.GetPosToWait();
+        customer.AINavMoveToward(posToWait);
+        customer.transform.rotation = Quaternion.LookRotation(posToWait);
+
     }
     public bool EvaluateCompleteCondition()
     {
@@ -58,7 +63,7 @@ public class NeedPay : CustomerNeeds
     }
     public void OnReached()
     {
-
+        customer.OnReached_Pay();
     }
 
     public void OnComplete()
@@ -66,6 +71,36 @@ public class NeedPay : CustomerNeeds
 
     }
 }
+
+public class NeedPacking : CustomerNeeds
+{
+    private Customer customer;
+    public NeedPacking(Customer customer)
+    {
+        this.customer = customer;
+    }
+
+    public void OnEnter()
+    {
+
+    }
+    public bool EvaluateCompleteCondition()
+    {
+        customer.OnPack();
+
+        return customer.stackCount == 0;
+    }
+    public void OnReached()
+    {
+        
+    }
+
+    public void OnComplete()
+    {
+
+    }
+}
+
 
 public class NeedTable : CustomerNeeds
 {

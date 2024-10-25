@@ -12,6 +12,7 @@ public abstract class Bread : MonoBehaviour, IBakeable, IStackable
     public BreadType breadName;
     protected Rigidbody rb;
     [SerializeField] protected float bakeForce;
+    public int price;
 
 
     protected virtual void Awake()

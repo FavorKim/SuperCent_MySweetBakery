@@ -7,12 +7,12 @@ public class CustomerNeedsManager
     
     public void EnqueueNeeds(CustomerNeeds customerNeeds)
     {
+
         if (needsQueue.Count == 0)
         {
             currentNeeds = customerNeeds;
             currentNeeds.OnEnter();
         }
-
         needsQueue.Enqueue(customerNeeds);
     }
 
@@ -28,7 +28,14 @@ public class CustomerNeedsManager
     private void ProgressNeedsQueue()
     {
         currentNeeds.OnComplete();
-        currentNeeds = needsQueue.Dequeue();
+
+
+        var nextNeeds = needsQueue.Dequeue();
+        while(nextNeeds == currentNeeds)
+        {
+            nextNeeds = needsQueue.Dequeue();
+        }
+        currentNeeds = nextNeeds;
         currentNeeds.OnEnter();
     }
 
