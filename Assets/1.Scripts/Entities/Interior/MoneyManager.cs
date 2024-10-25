@@ -10,6 +10,11 @@ public class MoneyManager : MonoBehaviour
 
     private Stack<GameObject> moneyStack = new Stack<GameObject>();
 
+    [SerializeField] private float lerpSpeed = 0.1f;
+    [SerializeField] private float lerpDelay = 0.05f;
+
+    private bool isEarning = false;
+
     public void InstanceMoney(int price)
     {
         for (int i = 0; i < price; i++)
@@ -29,11 +34,40 @@ public class MoneyManager : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    private void Update()
     {
-        if(other.TryGetComponent(out PlayerController player))
+        if (isEarning && moneyStack.Count > 0)
         {
-
+            StartCoroutine(CorEarnMoney());
         }
+    }
+
+
+    private IEnumerator CorEarnMoney()
+    {
+
+        var money = moneyStack.Pop();
+        yield return new WaitForSeconds(lerpDelay);
+        Vector3 destPos = transform.position + Vector3.up * 5;
+
+        while ((money.transform.position - destPos).sqrMagnitude > 0.1f)
+        {
+            money.transform.position = Vector3.Slerp(money.transform.position, destPos, Time.deltaTime * lerpSpeed);
+            yield return null;
+        }
+        money.transform.position = destPos;
+        MoneyPoolManager.Instance.ReturnMoney(money);
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out PlayerController player))
+            isEarning = true;
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.TryGetComponent(out PlayerController player))
+            isEarning = false;
     }
 }

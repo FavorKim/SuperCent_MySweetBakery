@@ -217,6 +217,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moneyFirstPos: {fileID: 1171857025}
+  lerpSpeed: 50
+  lerpDelay: 0.05
 --- !u!65 &89519324
 BoxCollider:
   m_ObjectHideFlags: 0
