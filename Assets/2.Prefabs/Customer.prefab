@@ -369,11 +369,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc25a0e9394bc114c97d44989a29ea15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stackDelay: 0.5
   stackMaxCount: 8
   stackPos: {fileID: 8644460254811406849}
   stackStartPos: {fileID: 1491393188914471657}
-  rotSpeed: 20
+  rotSpeed: 10
   breadCountRandomRange: 3
   isTableAvailable: 0
 --- !u!195 &3461068114528360992

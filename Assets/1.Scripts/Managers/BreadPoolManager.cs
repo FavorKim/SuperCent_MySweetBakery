@@ -8,10 +8,7 @@ public class BreadPoolManager : Singleton<BreadPoolManager>
     [SerializeField] private int poolCount = 20;
 
     Dictionary<BreadType, ObjectPool<Bread>> breadPools = new Dictionary<BreadType, ObjectPool<Bread>>();
-    private void Awake()
-    {
-        InitBreadPools();
-    }
+    
 
     private void InitBreadPools()
     {
@@ -32,5 +29,10 @@ public class BreadPoolManager : Singleton<BreadPoolManager>
     public void ReturnBread(Bread bread)
     {
         breadPools[bread.breadName].EnqueueObject(bread);
+    }
+
+    protected override void OnAwake()
+    {
+        InitBreadPools();
     }
 }

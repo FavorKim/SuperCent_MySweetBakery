@@ -21,7 +21,7 @@ public class NeedBread : CustomerNeeds
     {
         customer.SetBreadCountRandomly();
 
-        Vector3 destination = AINavigator.Instance.GetSaleShelvesWaitingPos();
+        Vector3 destination = DestinationManager.Instance.GetSaleShelvesWaitingPos();
         customer.AINavMoveToward(destination);
     }
     public bool EvaluateCompleteCondition()
@@ -30,7 +30,7 @@ public class NeedBread : CustomerNeeds
     }
     public void OnReached()
     {
-        Vector3 shelvPos = AINavigator.Instance.GetSaleShelvesPos();
+        Vector3 shelvPos = DestinationManager.Instance.GetSaleShelvesPos();
         customer.transform.rotation = Quaternion.LookRotation(shelvPos);
 
         customer.OnReached_Bread();
@@ -59,7 +59,7 @@ public class NeedPay : CustomerNeeds
     }
     public bool EvaluateCompleteCondition()
     {
-        return customer.IsReadyToPay;
+        return Counter.Instance.isPayable && customer.IsReached;
     }
     public void OnReached()
     {
@@ -97,7 +97,7 @@ public class NeedPacking : CustomerNeeds
 
     public void OnComplete()
     {
-
+        Counter.Instance.Pay();
     }
 }
 
@@ -126,5 +126,33 @@ public class NeedTable : CustomerNeeds
     public void OnComplete()
     {
 
+    }
+}
+
+public class GoBack : CustomerNeeds
+{
+    private Customer customer;
+    public GoBack(Customer customer)
+    {
+        this.customer = customer;
+    }
+
+    public void OnEnter()
+    {
+        Vector3 entrance = DestinationManager.Instance.GetEntrancePos();
+        customer.AINavMoveToward(entrance);
+    }
+    public bool EvaluateCompleteCondition()
+    {
+        return customer.IsReached;
+    }
+
+    public void OnReached()
+    {
+
+    }
+    public void OnComplete()
+    {
+        CustomerPoolManager.Instance.ReturnCustomer(customer);
     }
 }

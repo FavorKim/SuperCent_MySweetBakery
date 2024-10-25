@@ -19,6 +19,7 @@ public class CustomerNeedsManager
 
     public void RunNeedsQueue()
     {
+        if (currentNeeds == null) return;
         if (currentNeeds.EvaluateCompleteCondition() == true)
         {
             ProgressNeedsQueue();
@@ -31,12 +32,15 @@ public class CustomerNeedsManager
 
 
         var nextNeeds = needsQueue.Dequeue();
-        while(nextNeeds == currentNeeds)
+        if (nextNeeds != null)
         {
-            nextNeeds = needsQueue.Dequeue();
+            while (nextNeeds == currentNeeds)
+            {
+                nextNeeds = needsQueue.Dequeue();
+            }
+            currentNeeds = nextNeeds;
+            currentNeeds.OnEnter();
         }
-        currentNeeds = nextNeeds;
-        currentNeeds.OnEnter();
     }
 
     public void ResetCustomerNeedsManager()

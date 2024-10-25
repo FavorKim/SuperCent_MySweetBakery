@@ -43,6 +43,7 @@ public class ObjectPool <T>  where T : MonoBehaviour
         go.gameObject.SetActive(false);
     }
 
+
     public T GetObject()
     {
         T obj;
@@ -61,6 +62,73 @@ public class ObjectPool <T>  where T : MonoBehaviour
     {
 
         if(pool.Count == 0) return;
+
+        foreach (var go in pool)
+        {
+            GameObject.Destroy(go);
+        }
+
+        pool.Clear();
+    }
+
+}
+public class ObjectPool
+{
+    private GameObject prefab;
+    private int poolCount;
+
+    private Queue<GameObject> pool = new Queue<GameObject>();
+    private Transform parent;
+
+    public ObjectPool(GameObject prefab, int poolCount, Transform parent)
+    {
+        this.prefab = prefab;
+        this.poolCount = poolCount;
+        var poolParent = new GameObject(prefab.name + "Pool");
+        poolParent.transform.SetParent(parent);
+        this.parent = poolParent.transform;
+        InitPool();
+    }
+
+
+    private void InitPool()
+    {
+        if (prefab == null) return;
+
+        for (int i = 0; i < poolCount; i++)
+        {
+            GameObject go = GameObject.Instantiate(prefab, parent);
+
+            go.gameObject.SetActive(false);
+            pool.Enqueue(go);
+        }
+    }
+
+    public void EnqueueObject(GameObject go)
+    {
+        pool.Enqueue(go);
+        go.transform.SetParent(parent);
+        go.gameObject.SetActive(false);
+    }
+
+    public GameObject GetObject()
+    {
+        GameObject obj;
+        if (pool.Count == 0)
+        {
+            var create = GameObject.Instantiate(prefab);
+            EnqueueObject(create);
+        }
+
+        obj = pool.Dequeue();
+        obj.gameObject.SetActive(true);
+        return obj;
+    }
+
+    public void ClearPool()
+    {
+
+        if (pool.Count == 0) return;
 
         foreach (var go in pool)
         {

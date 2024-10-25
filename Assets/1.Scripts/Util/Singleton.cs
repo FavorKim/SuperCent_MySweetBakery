@@ -17,13 +17,14 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                     var obj = new GameObject("InstancedSingleton");
                     DontDestroyOnLoad(obj);
                     instance = obj.AddComponent<T>();
+                    
                 }
             }
             return instance;
         }
     }
 
-    protected virtual void Start()
+    protected void Start()
     {
         if(instance != null)
         {
@@ -38,4 +39,11 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
             DontDestroyOnLoad(instance);
         }
     }
+    protected void Awake()
+    {
+        OnAwake();
+    }
+
+
+    protected virtual void OnAwake() { }
 }

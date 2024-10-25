@@ -12,8 +12,6 @@ public class Customer : BreadStacker
 
     [SerializeField] private float rotSpeed = 20.0f;
 
-    public bool IsReadyToPay { get; set; } = false;
-
     private bool isPayOver = false;
 
     [SerializeField] private int breadCountRandomRange = 3;
@@ -55,22 +53,33 @@ public class Customer : BreadStacker
     protected override void OnEnable()
     {
         base.OnEnable();
-        if (needsManager == null)
-            needsManager = new CustomerNeedsManager();
-        needsManager.EnqueueNeeds(new NeedBread(this));
-        needsManager.EnqueueNeeds(new NeedPay(this));
-        needsManager.EnqueueNeeds(new NeedPacking(this));
-
         OnPushBread += OnPushBread_SetCount;
     }
     protected override void OnDisable()
     {
         base.OnDisable();
-        needsManager.ResetCustomerNeedsManager();
 
         OnPushBread -= OnPushBread_SetCount;
-        priceToPay = 0;
+        
+    }
 
+    public void OnStartCustomerAI()
+    {
+        if (needsManager == null)
+            needsManager = new CustomerNeedsManager();
+        needsManager.EnqueueNeeds(new NeedBread(this));
+        needsManager.EnqueueNeeds(new NeedPay(this));
+        needsManager.EnqueueNeeds(new NeedPacking(this));
+        needsManager.EnqueueNeeds(new GoBack(this));
+
+        transform.position = DestinationManager.Instance.GetEntrancePos();
+    }
+
+    public void OnEndCustomerAI()
+    {
+        needsManager.ResetCustomerNeedsManager();
+        priceToPay = 0;
+        agent.isStopped = true;
     }
 
     private void Update()
@@ -173,6 +182,7 @@ public class Customer : BreadStacker
             StartCoroutine(CorStackAnim(bread.transform, GetStackStartPos, Counter.Instance.PaperBagPos));
         }
     }
+
     public int GetPriceToPay()
     {
         return priceToPay;

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AINavigator : Singleton<AINavigator>
+public class DestinationManager : Singleton<DestinationManager>
 {
     [SerializeField] private SaleShelves shelves;
-
+    [SerializeField] private Transform entrance;
     public Vector3 GetSaleShelvesWaitingPos()
     {
         Vector3 dest = shelves.GetWaitingPositionAvailable();
@@ -22,5 +22,10 @@ public class AINavigator : Singleton<AINavigator>
     {
         return shelves.transform.position;
     }
+    protected override void OnAwake() { }
 
+    public Vector3 GetEntrancePos()
+    {
+        return entrance.position;
+    }
 }
