@@ -9,6 +9,7 @@ public class MoneyManager : MonoBehaviour
     [SerializeField] private Transform moneyFirstPos;
 
     private Stack<GameObject> moneyStack = new Stack<GameObject>();
+
     public void InstanceMoney(int price)
     {
         for (int i = 0; i < price; i++)
@@ -25,6 +26,14 @@ public class MoneyManager : MonoBehaviour
             pos += moneyFirstPos.localPosition;
 
             money.transform.localPosition = pos;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if(other.TryGetComponent(out PlayerController player))
+        {
+
         }
     }
 }

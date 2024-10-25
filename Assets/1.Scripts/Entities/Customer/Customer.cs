@@ -5,20 +5,23 @@ using UnityEngine;
 using UnityEngine.AI;
 public class Customer : BreadStacker
 {
+    #region Variable
+    protected WaitingPosition posToGo;
+
     private NavMeshAgent agent;
     private CustomerNeedsManager needsManager;
-    public WaitingPosition posToGo;
-    public CustomerUIManager UIManager { get; private set; }
+
+    protected CustomerUIManager UIManager { get; private set; }
 
     [SerializeField] private float rotSpeed = 20.0f;
 
     private bool isPayOver = false;
 
     [SerializeField] private int breadCountRandomRange = 3;
+
     public int BreadCountToNeed { get; protected set; }
 
-    // 나중에 테이블 매니저가 나오면 교체할 가용 테이블이 있는지에 대한 변수
-    public bool isTableAvailable = false;
+    
 
     private int priceToPay = 0;
 
@@ -43,17 +46,27 @@ public class Customer : BreadStacker
         }
     }
 
+    // 나중에 테이블 매니저가 나오면 교체할 가용 테이블이 있는지에 대한 변수
+    public bool isTableAvailable = false;
+    #endregion
+
+    #region UnityLifeCycle
     protected override void Awake()
     {
         base.Awake();
         agent = GetComponent<NavMeshAgent>();
         UIManager = GetComponentInChildren<CustomerUIManager>();
     }
-
     protected override void OnEnable()
     {
         base.OnEnable();
         OnPushBread += OnPushBread_SetCount;
+    }
+    private void Update()
+    {
+        needsManager.RunNeedsQueue();
+
+        SetAnimatorOnMove();
     }
     protected override void OnDisable()
     {
@@ -62,7 +75,20 @@ public class Customer : BreadStacker
         OnPushBread -= OnPushBread_SetCount;
 
     }
+    #endregion
 
+    #region events
+    protected override void OnTriggerStay_SaleShelves(SaleShelves shelves)
+    {
+        if (BreadCountToNeed > 0 && IsReached)
+        {
+            Bread bread = shelves.PopBread();
+            if (bread != null)
+            {
+                InvokeOnPushBread(bread);
+            }
+        }
+    }
     public void OnStartCustomerAI()
     {
         if (needsManager == null)
@@ -74,7 +100,6 @@ public class Customer : BreadStacker
 
         transform.position = DestinationManager.Instance.GetEntrancePos();
     }
-
     public void OnEndCustomerAI()
     {
 
@@ -83,28 +108,15 @@ public class Customer : BreadStacker
         agent.isStopped = true;
         CustomerPoolManager.Instance.ReturnCustomer(this);
     }
-
-    private void Update()
+    private void OnPushBread_SetCount(Bread bread)
     {
-        needsManager.RunNeedsQueue();
+        BreadCountToNeed = stackMaxCount - StackCount;
 
-        SetAnimatorOnMove();
+        UIManager.SetBreadText($"{BreadCountToNeed}");
     }
+    #endregion
 
-
-    protected override void OnTriggerStay_SaleShelves(SaleShelves shelves)
-    {
-        if (!isStakcing && BreadCountToNeed > 0 && IsReached)
-        {
-            Bread bread = shelves.PopBread();
-            if (bread != null)
-            {
-                InvokeOnPushBread(bread);
-            }
-        }
-    }
-
-
+    #region method
     public void AINavMoveToward(Vector3 pos)
     {
         agent.SetDestination(pos);
@@ -122,29 +134,20 @@ public class Customer : BreadStacker
         IsReached = false;
         return true;
     }
-
     private void SetAnimatorOnMove()
     {
         bool isStop = AgentIsMove();
         anim.SetBool("isMove", isStop);
     }
-
-
-    private void OnPushBread_SetCount(Bread bread)
-    {
-        BreadCountToNeed = stackMaxCount - stackCount;
-
-        UIManager.SetBreadText($"{BreadCountToNeed}");
-    }
     public int GetPriceToPay()
     {
         return priceToPay;
     }
+    #endregion
 
 
 
-
-
+    #region CustomerNeeds
     public class NeedBread : CustomerNeeds
     {
         private Customer customer;
@@ -197,7 +200,7 @@ public class Customer : BreadStacker
         private void OnReached_SetBreadUI()
         {
             customer.UIManager.SetActiveUI(UIType.BREAD, true);
-            customer.BreadCountToNeed = customer.stackMaxCount - customer.stackCount;
+            customer.BreadCountToNeed = customer.stackMaxCount - customer.StackCount;
             customer.UIManager.SetBreadText($"{customer.BreadCountToNeed}");
         }
 
@@ -266,7 +269,7 @@ public class Customer : BreadStacker
         {
             OnPack();
 
-            return customer.stackCount == 0;
+            return customer.StackCount == 0;
         }
         public void OnReached()
         {
@@ -280,7 +283,7 @@ public class Customer : BreadStacker
 
         public void OnPack()
         {
-            if (!customer.isStakcing && customer.stackCount > 0)
+            if (!customer.isStakcing && customer.StackCount > 0)
             {
                 Bread bread = customer.PopBread();
                 customer.priceToPay += bread.price;
@@ -347,4 +350,5 @@ public class Customer : BreadStacker
             customer.AINavMoveToward(entrance);
         }
     }
+    #endregion
 }

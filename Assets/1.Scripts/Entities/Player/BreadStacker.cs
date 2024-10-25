@@ -7,6 +7,7 @@ public class BreadStacker : MonoBehaviour
 {
     protected Animator anim;
 
+    
     protected event Action<Bread> OnPushBread;
     protected event Action<Bread> OnPopBread;
 
@@ -21,16 +22,26 @@ public class BreadStacker : MonoBehaviour
 
     [SerializeField] private Transform stackPos;
     [SerializeField] private Transform stackStartPos;
-    public int stackCount => breadStack.Count;
+
+    public int StackCount
+    {
+        get
+        {
+            
+            return breadStack.Count;
+        }
+    }
+
 
     protected virtual void OnEnable()
     {
         OnPushBread += OnPushBread_PushBread;
         OnPushBread += OnPushBread_PlayStackAnimation;
-        OnPushBread += OnPushBread_SetPlayerAnim;
+        OnPushBread += OnChangedBreadStack;
 
         OnPopBread += OnPopBread_SetBreadTransform;
-        OnPopBread += OnPopBread_SetPlayerAnim;
+        OnPopBread += OnChangedBreadStack;
+
     }
     protected virtual void Awake()
     {
@@ -39,23 +50,21 @@ public class BreadStacker : MonoBehaviour
 
     protected virtual void OnDisable()
     {
-        OnPushBread -= OnPushBread_SetPlayerAnim;
+        OnPushBread -= OnChangedBreadStack;
         OnPushBread -= OnPushBread_PlayStackAnimation;
         OnPushBread -= OnPushBread_PushBread;
 
-        OnPopBread -= OnPopBread_SetPlayerAnim;
+        OnPopBread -= OnChangedBreadStack;
         OnPopBread -= OnPopBread_SetBreadTransform;
     }
+
 
     private void OnPopBread_SetBreadTransform(Bread bread)
     {
         bread.transform.SetParent(null);
         bread.OnPopped();
     }
-    private void OnPopBread_SetPlayerAnim(Bread bread)
-    {
-        anim.SetBool("isStack", false);
-    }
+    
 
     private void OnPushBread_PlayStackAnimation(Bread bread)
     {
@@ -68,15 +77,19 @@ public class BreadStacker : MonoBehaviour
         bread.OnPushed();
         breadStack.Push(bread);
     }
-    private void OnPushBread_SetPlayerAnim(Bread bread)
-    {
-        anim.SetBool("isStack", true);
-    }
-
+    
 
     protected virtual void OnTriggerStay_Storage(BreadStorage storage) { }
     protected virtual void OnTriggerStay_SaleShelves(SaleShelves shelves) { }
     
+    private void OnChangedBreadStack(Bread bread)
+    {
+        if (breadStack.Count == 0)
+            anim.SetBool("isStack", false);
+        else
+            anim.SetBool("isStack", true);
+    }
+
 
     public Bread PopBread()
     {
@@ -109,13 +122,14 @@ public class BreadStacker : MonoBehaviour
 
     protected void InvokeOnPushBread(Bread bread)
     {
-        if (stackCount < stackMaxCount)
+        if (StackCount < stackMaxCount)
             OnPushBread.Invoke(bread);
     }
     protected void InvokeOnPopBread(Bread bread)
     {
         OnPopBread.Invoke(bread);
     }
+
 
     protected IEnumerator CorStackAnim(Transform bread, Func<Vector3> startPos, Func<Vector3> destPos)
     {
@@ -139,15 +153,14 @@ public class BreadStacker : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.TryGetComponent(out BreadStorage storage))
+        if (other.TryGetComponent(out BreadStorage storage) && !isStakcing)
         {
             OnTriggerStay_Storage(storage);
         }
-        if (other.TryGetComponent(out SaleShelves shelves))
+        if (other.TryGetComponent(out SaleShelves shelves) && !isStakcing)
         {
             OnTriggerStay_SaleShelves(shelves);
         }
-        
     }
    
 

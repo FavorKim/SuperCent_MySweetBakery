@@ -10,14 +10,14 @@ using static UnityEditor.PlayerSettings;
 public class PlayerController : BreadStacker
 {
     [SerializeField] private ControllStick stick;
-    
+
 
     private NavMeshAgent agent;
 
     [SerializeField] private float moveSpeed;
     [SerializeField] private float rotSpeed;
 
-    
+
 
     private event Action<Vector3> OnMove;
 
@@ -65,7 +65,7 @@ public class PlayerController : BreadStacker
         }
 
         // 플레이어 이동
-        agent.Move(direction * Time.deltaTime* moveSpeed);
+        agent.Move(direction * Time.deltaTime * moveSpeed);
     }
     private void OnMove_SetPlayerAnim(Vector3 dir)
     {
@@ -73,24 +73,21 @@ public class PlayerController : BreadStacker
         anim.SetBool("isMove", isMove);
     }
 
-    
+
     #endregion
 
 
     protected override void OnTriggerStay_Storage(BreadStorage storage)
     {
-        if (!isStakcing)
+        Bread bread = storage.OnPopBread();
+        if (bread != null)
         {
-            Bread bread = storage.OnPopBread();
-            if (bread != null)
-            {
-                    InvokeOnPushBread(bread);
-            }
+            InvokeOnPushBread(bread);
         }
     }
     protected override void OnTriggerStay_SaleShelves(SaleShelves shelves)
     {
-        if (shelves.IsStackable() && !isStakcing)
+        if (shelves.IsStackable())
         {
             Bread bread = PopBread();
             if (bread != null)
@@ -101,10 +98,10 @@ public class PlayerController : BreadStacker
         }
     }
 
-  
+
     #region Method
 
-   
+
 
     private Vector3 GetMoveDir()
     {
@@ -112,7 +109,7 @@ public class PlayerController : BreadStacker
         Vector3 moveDir = new Vector3(dir.x, 0, dir.y);
         return moveDir;
     }
-    
+
     private void PlayerMove()
     {
         Vector3 moveDir = GetMoveDir();
@@ -123,7 +120,7 @@ public class PlayerController : BreadStacker
 
     #endregion
 
-    
+
 
 
 }
