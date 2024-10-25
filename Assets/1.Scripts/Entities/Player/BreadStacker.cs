@@ -11,8 +11,11 @@ public class BreadStacker : MonoBehaviour
     protected event Action<Bread> OnPopBread;
 
     private Stack<Bread> breadStack = new Stack<Bread>();
+    
     private float stackHeight = 0.3f;
     private float stackDelay = 0.1f;
+    
+    
     [SerializeField] protected int stackMaxCount = 8;
     protected bool isStakcing = false;
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
-
 public class Customer : BreadStacker
 {
     private NavMeshAgent agent;
@@ -16,7 +15,7 @@ public class Customer : BreadStacker
     private bool isPayOver = false;
 
     [SerializeField] private int breadCountRandomRange = 3;
-    public int BreadCountToNeed { get; private set; }
+    public int BreadCountToNeed { get; protected set; }
 
     // 나중에 테이블 매니저가 나오면 교체할 가용 테이블이 있는지에 대한 변수
     public bool isTableAvailable = false;
@@ -61,7 +60,7 @@ public class Customer : BreadStacker
         base.OnDisable();
 
         OnPushBread -= OnPushBread_SetCount;
-        
+
     }
 
     public void OnStartCustomerAI()
@@ -88,7 +87,7 @@ public class Customer : BreadStacker
     private void Update()
     {
         needsManager.RunNeedsQueue();
-        
+
         SetAnimatorOnMove();
     }
 
@@ -110,19 +109,6 @@ public class Customer : BreadStacker
     {
         agent.SetDestination(pos);
     }
-
-    public void SetBreadCountRandomly()
-    {
-        BreadCountToNeed = Random.Range(0, breadCountRandomRange) + 1;
-        stackMaxCount = BreadCountToNeed;
-    }
-
-    private void SetAnimatorOnMove()
-    {
-        bool isStop = AgentIsMove();
-        anim.SetBool("isMove", isStop);
-    }
-
     private bool AgentIsMove()
     {
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
@@ -137,21 +123,12 @@ public class Customer : BreadStacker
         return true;
     }
 
-    //public void RotateToward(Vector3 direction)
-    //{
-    //    StartCoroutine(CorRotateToward(direction));
-    //}
-
-
-
-    public void OnReached_Bread()
+    private void SetAnimatorOnMove()
     {
-        UIManager.SetActiveUI(UIType.BREAD, true);
-
-        BreadCountToNeed = stackMaxCount - stackCount;
-        UIManager.SetBreadText($"{BreadCountToNeed}");
-        isStakcing = false;
+        bool isStop = AgentIsMove();
+        anim.SetBool("isMove", isStop);
     }
+
 
     private void OnPushBread_SetCount(Bread bread)
     {
@@ -159,53 +136,215 @@ public class Customer : BreadStacker
 
         UIManager.SetBreadText($"{BreadCountToNeed}");
     }
-
-    public void OnEnter_Bread()
-    {
-        isStakcing = true;
-    }
-
-    public void OnComplete_Bread()
-    {
-        UIManager.SetActiveUI(UIType.BREAD, false);
-        posToGo.SetAvailable(true);
-        posToGo = null;
-    }
-
-
-    public void OnReached_Pay()
-    {
-        UIManager.SetActiveUI(UIType.PAY, true);
-        transform.rotation = Quaternion.LookRotation(Vector3.back);
-        Counter.Instance.EnqueueCustomer(this);
-    }
-    public void OnPack()
-    {
-        if (!isStakcing && stackCount > 0)
-        {
-            Bread bread = PopBread();
-            priceToPay += bread.price;
-            StartCoroutine(CorStackAnim(bread.transform, GetStackStartPos, Counter.Instance.PaperBagPos));
-        }
-    }
-
     public int GetPriceToPay()
     {
         return priceToPay;
     }
 
-    /*
-    private IEnumerator CorRotateToward(Vector3 direction)
+
+
+
+
+    public class NeedBread : CustomerNeeds
     {
-        while (direction.sqrMagnitude > 1f)  // 방향 벡터가 거의 0이 아닌 경우
+        private Customer customer;
+        public NeedBread(Customer customer)
         {
-            // Y축만 회전
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            
-            // 회전값 보간
-            agent.transform.rotation = Quaternion.Slerp(agent.transform.rotation, targetRotation, Time.deltaTime * rotSpeed);
-            yield return null;
+            this.customer = customer;
+        }
+
+        public void OnEnter()
+        {
+            OnEnter_SetDestination();
+            OnEnter_SetBreadCount();
+        }
+        public bool EvaluateCompleteCondition()
+        {
+            return customer.BreadCountToNeed == 0;
+        }
+        public void OnReached()
+        {
+            OnReached_SetBreadUI();
+            OnReached_SetDestination();
+            customer.isStakcing = false;
+        }
+        public void OnComplete()
+        {
+            OnComplete_Bread();
+        }
+
+
+        private void OnEnter_SetBreadCount()
+        {
+            customer.BreadCountToNeed = Random.Range(0, customer.breadCountRandomRange) + 1;
+            customer.stackMaxCount = customer.BreadCountToNeed;
+        }
+
+        private void OnEnter_SetDestination()
+        {
+            customer.isStakcing = true;
+            customer.posToGo = DestinationManager.Instance.GetSaleShelvesWaitingPos();
+            customer.AINavMoveToward(customer.posToGo.GetPosition());
+        }
+
+
+        private void OnReached_SetDestination()
+        {
+            Vector3 shelvPos = DestinationManager.Instance.GetSaleShelvesPos();
+            customer.transform.rotation = Quaternion.LookRotation(shelvPos);
+        }
+
+        private void OnReached_SetBreadUI()
+        {
+            customer.UIManager.SetActiveUI(UIType.BREAD, true);
+            customer.BreadCountToNeed = customer.stackMaxCount - customer.stackCount;
+            customer.UIManager.SetBreadText($"{customer.BreadCountToNeed}");
+        }
+
+
+
+        private void OnComplete_Bread()
+        {
+            customer.UIManager.SetActiveUI(UIType.BREAD, false);
+            customer.posToGo.SetAvailable(true);
+            customer.posToGo = null;
         }
     }
-    */
+    public class NeedPay : CustomerNeeds
+    {
+        private Customer customer;
+        public NeedPay(Customer customer)
+        {
+            this.customer = customer;
+        }
+
+        public void OnEnter()
+        {
+            OnEnter_SetDestination();
+
+        }
+        public bool EvaluateCompleteCondition()
+        {
+            return Counter.Instance.isPayable && customer.IsReached;
+        }
+        public void OnReached()
+        {
+            OnReached_Pay();
+        }
+
+        public void OnComplete()
+        {
+
+        }
+
+        public void OnReached_Pay()
+        {
+            customer.UIManager.SetActiveUI(UIType.PAY, true);
+            customer.transform.rotation = Quaternion.LookRotation(Vector3.back);
+            Counter.Instance.EnqueueCustomer(customer);
+        }
+        private void OnEnter_SetDestination()
+        {
+            Vector3 posToWait = Counter.Instance.GetPosToWait();
+            customer.AINavMoveToward(posToWait);
+            customer.transform.rotation = Quaternion.LookRotation(posToWait);
+        }
+    }
+    public class NeedPacking : CustomerNeeds
+    {
+        private Customer customer;
+        public NeedPacking(Customer customer)
+        {
+            this.customer = customer;
+        }
+
+        public void OnEnter()
+        {
+
+        }
+        public bool EvaluateCompleteCondition()
+        {
+            OnPack();
+
+            return customer.stackCount == 0;
+        }
+        public void OnReached()
+        {
+
+        }
+
+        public void OnComplete()
+        {
+            Counter.Instance.Pay();
+        }
+
+        public void OnPack()
+        {
+            if (!customer.isStakcing && customer.stackCount > 0)
+            {
+                Bread bread = customer.PopBread();
+                customer.priceToPay += bread.price;
+                customer.StartCoroutine(customer.CorStackAnim(bread.transform, customer.GetStackStartPos, Counter.Instance.PaperBagPos));
+            }
+        }
+
+    }
+    public class NeedTable : CustomerNeeds
+    {
+        private Customer customer;
+        public NeedTable(Customer customer)
+        {
+            this.customer = customer;
+        }
+
+        public void OnEnter()
+        {
+
+        }
+        public bool EvaluateCompleteCondition()
+        {
+            return customer.isTableAvailable;
+        }
+
+        public void OnReached()
+        {
+
+        }
+        public void OnComplete()
+        {
+
+        }
+    }
+    public class GoBack : CustomerNeeds
+    {
+        private Customer customer;
+        public GoBack(Customer customer)
+        {
+            this.customer = customer;
+        }
+
+        public void OnEnter()
+        {
+            OnEnter_SetDestination();
+        }
+        public bool EvaluateCompleteCondition()
+        {
+            return customer.IsReached;
+        }
+
+        public void OnReached()
+        {
+
+        }
+        public void OnComplete()
+        {
+            customer.OnEndCustomerAI();
+        }
+
+        private void OnEnter_SetDestination()
+        {
+            Vector3 entrance = DestinationManager.Instance.GetEntrancePos();
+            customer.AINavMoveToward(entrance);
+        }
+    }
 }
