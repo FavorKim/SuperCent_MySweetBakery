@@ -6,6 +6,8 @@ public class Table : MonoBehaviour
 {
     [SerializeField] private GameObject Trash;
 
+    [SerializeField] private MoneyManager moneyManager;
+
     private bool isAvailable = false;
     public bool IsAvailable
     {
@@ -25,9 +27,10 @@ public class Table : MonoBehaviour
         TableManager.Instance.AddTable(this);
     }
 
-    public void OnEndEatingTable()
+    public void OnEndEatingTable(Customer customer)
     {
         Trash.SetActive(true);
+        InstanceMoney(customer);
     }
     public void OnCleanTable()
     {
@@ -35,4 +38,17 @@ public class Table : MonoBehaviour
         IsAvailable = true;
     }
 
+    private void InstanceMoney(Customer customer)
+    {
+        moneyManager.InstanceMoney(customer.GetPriceToPay() + 10);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.TryGetComponent(out PlayerController player))
+        {
+            if (Trash.activeSelf == true)
+                OnCleanTable();
+        }
+    }
 }

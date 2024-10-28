@@ -107,11 +107,11 @@ public partial class Customer : BreadStacker
         {
             customer.UIManager.SetActiveUI(UIType.PAY, true);
             customer.transform.rotation = Quaternion.LookRotation(Vector3.back);
-            Counter.Instance.EnqueueCustomer(customer);
+            Counter.Instance.packingLine.EnqueueCustomer(customer);
         }
         private void OnEnter_SetDestination()
         {
-            Vector3 posToWait = Counter.Instance.GetPosToWait();
+            Vector3 posToWait = Counter.Instance.packingLine.GetPosToWait();
             customer.AINavMoveToward(posToWait);
             customer.transform.rotation = Quaternion.LookRotation(posToWait);
         }
@@ -174,8 +174,8 @@ public partial class Customer : BreadStacker
         }
         public void OnComplete()
         {
-            Counter.Instance.RePosCustomers();
-            Counter.Instance.Pay(customer);
+            Counter.Instance.packingLine.RePosCustomers();
+            Counter.Instance.Packing_Pay(customer);
 
         }
         public void OnPack()
@@ -226,7 +226,8 @@ public partial class Customer : BreadStacker
 
         public void OnEnter()
         {
-
+            Vector3 dest = Counter.Instance.tableLine.GetPosToWait();
+            customer.AINavMoveToward(dest);
         }
         public bool EvaluateCompleteCondition()
         {
@@ -239,7 +240,7 @@ public partial class Customer : BreadStacker
         }
         public void OnComplete()
         {
-            
+            Counter.Instance.tableLine.RePosCustomers();
         }
     }
     public class EatingAtTable : CustomerNeeds
@@ -267,12 +268,14 @@ public partial class Customer : BreadStacker
 
         public void OnReached()
         {
+            customer.transform.rotation = Quaternion.identity;
+            customer.anim.SetBool("isSitting",true);
             // 앉는 애니메이션으로 변경
         }
         public void OnComplete()
         {
-            table.OnEndEatingTable();
-            Counter.Instance.Pay(customer);
+            customer.anim.SetBool("isSitting", false);
+            table.OnEndEatingTable(customer);
         }
 
 

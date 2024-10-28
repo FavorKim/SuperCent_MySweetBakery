@@ -4,30 +4,23 @@ using UnityEngine;
 
 public class Counter : Singleton<Counter>
 {
-    [SerializeField] private Transform firstPos;
     [SerializeField] private Transform paperBag;
     public Transform GetPaperBagPos() {  return paperBag; }
-    [SerializeField] private float lineGap;
     [SerializeField] private MoneyManager moneyManager;
 
+    public CustomerLine packingLine;
+    public CustomerLine tableLine;
 
-    private Queue<Customer> customers = new Queue<Customer>();
-    private Queue<Transform> LinePos = new Queue<Transform>();
 
     public bool isPayable = false;
 
-    private bool isPacking = false;
-    public bool IsPacking { get { return isPacking; } }
 
-    public void EnqueueCustomer(Customer customer)
-    {
-        customers.Enqueue(customer);
-    }
-    public void Pay(Customer customer)
+    
+    public void Packing_Pay(Customer customer)
     {
         int price = customer.GetPriceToPay();
         moneyManager.InstanceMoney(price);
-        isPacking = false;
+        packingLine.IsStop = false;
     }
 
 
@@ -50,36 +43,12 @@ public class Counter : Singleton<Counter>
     {
         if (isPayable)
         {
-            Queueing();
+            packingLine.Queueing();
+            tableLine.Queueing();
         }
     }
 
 
     public Vector3 PaperBagPos() { return paperBag.position; }
-    public Vector3 GetPosToWait()
-    {
-        Vector3 pos = firstPos.position;
-        pos.z += lineGap * customers.Count;
 
-        return pos;
-    }
-    public void RePosCustomers()
-    {
-        foreach (var customer in customers)
-        {
-            var dest = customer.transform.position;
-            dest.z -= lineGap;
-            customer.AINavMoveToward(dest);
-        }
-    }
-
-    public void Queueing()
-    {
-        if (!isPacking && customers.Count > 0)
-        {
-            var customer = customers.Dequeue();
-            customer.isPacking = true;
-            isPacking = true;
-        }
-    }
 }

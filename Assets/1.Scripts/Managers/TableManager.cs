@@ -20,8 +20,6 @@ public class TableManager : Singleton<TableManager>
                 return table;
             }
         }
-
-        Debug.LogError("사용 가능한 테이블이 없습니다.");
         return null;
     }
 }
