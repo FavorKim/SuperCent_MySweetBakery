@@ -6,6 +6,7 @@ public class Counter : Singleton<Counter>
 {
     [SerializeField] private Transform firstPos;
     [SerializeField] private Transform paperBag;
+    public Transform GetPaperBagPos() {  return paperBag; }
     [SerializeField] private float lineGap;
     [SerializeField] private MoneyManager moneyManager;
 
@@ -14,7 +15,6 @@ public class Counter : Singleton<Counter>
     private Queue<Transform> LinePos = new Queue<Transform>();
 
     public bool isPayable = false;
-    [SerializeField] private float packingTime = 3.0f;  //추후 애니메이션 시간으로 바꿀 예정
 
     private bool isPacking = false;
     public bool IsPacking { get { return isPacking; } }

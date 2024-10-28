@@ -15,7 +15,7 @@ public class BreadStacker : MonoBehaviour
     
     private float stackHeight = 0.3f;
     private float stackDelay = 0.1f;
-    
+    [SerializeField] private float stackLerpSpeed = 20.0f;
     
     [SerializeField] protected int stackMaxCount = 8;
     protected bool isStakcing = false;
@@ -89,6 +89,10 @@ public class BreadStacker : MonoBehaviour
         else
             anim.SetBool("isStack", true);
     }
+    public void ForceSetIsStackAnim()
+    {
+        anim.SetBool("isStack", true);
+    }
 
 
     public Bread PopBread()
@@ -138,6 +142,32 @@ public class BreadStacker : MonoBehaviour
         bread.transform.position = startPos.Invoke();
         isStakcing = true;
         yield return null;
+        while (curTime < stackDelay)
+        {
+            curTime += Time.deltaTime;
+            yield return null;
+        }
+
+
+        bread.transform.position = destPos.Invoke();
+        bread.transform.localRotation = Quaternion.identity;
+
+        isStakcing = false;
+    }
+    protected IEnumerator CorStackAnim(Transform bread, Func<Vector3> startPos, Func<Vector3> destPos, float lerpSpeed, float stackDelay = 0.1f)
+    {
+        float curTime = 0;
+
+        isStakcing = true;
+        yield return null;
+        
+        bread.transform.position = startPos.Invoke();
+
+        while ((bread.transform.position - destPos.Invoke()).sqrMagnitude > 0.1f)
+        {
+            bread.transform.position = Vector3.Slerp(bread.transform.position, destPos.Invoke(), Time.deltaTime * lerpSpeed);
+            yield return null;
+        }
 
         while (curTime < stackDelay)
         {
