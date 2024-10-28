@@ -10,8 +10,9 @@ public class Customer : BreadStacker
 
     private NavMeshAgent agent;
     private CustomerNeedsManager needsManager;
-
     protected CustomerUIManager UIManager { get; private set; }
+
+    public bool isPacking;
 
     [SerializeField] private float rotSpeed = 20.0f;
 
@@ -96,6 +97,7 @@ public class Customer : BreadStacker
         needsManager.EnqueueNeeds(new NeedBread(this));
         needsManager.EnqueueNeeds(new NeedPay(this));
         needsManager.EnqueueNeeds(new NeedPacking(this));
+        needsManager.EnqueueNeeds(new IsPacking(this));
         needsManager.EnqueueNeeds(new GoBack(this));
 
         transform.position = DestinationManager.Instance.GetEntrancePos();
@@ -267,9 +269,7 @@ public class Customer : BreadStacker
         }
         public bool EvaluateCompleteCondition()
         {
-            OnPack();
-
-            return customer.StackCount == 0;
+            return customer.isPacking && customer.IsReached;
         }
         public void OnReached()
         {
@@ -278,9 +278,40 @@ public class Customer : BreadStacker
 
         public void OnComplete()
         {
-            Counter.Instance.Pay();
         }
 
+        
+
+    }
+    public class IsPacking : CustomerNeeds
+    {
+        private Customer customer;
+        public IsPacking(Customer customer)
+        {
+            this.customer = customer;
+        }
+
+        public void OnEnter()
+        {
+
+        }
+        public bool EvaluateCompleteCondition()
+        {
+            OnPack();
+
+            return customer.StackCount == 0;
+        }
+
+        public void OnReached()
+        {
+
+        }
+        public void OnComplete()
+        {
+            Counter.Instance.RePosCustomers();
+            Counter.Instance.Pay(customer);
+
+        }
         public void OnPack()
         {
             if (!customer.isStakcing && customer.StackCount > 0)

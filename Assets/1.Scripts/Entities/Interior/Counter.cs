@@ -9,23 +9,25 @@ public class Counter : Singleton<Counter>
     [SerializeField] private float lineGap;
     [SerializeField] private MoneyManager moneyManager;
 
-    
+
     private Queue<Customer> customers = new Queue<Customer>();
+    private Queue<Transform> LinePos = new Queue<Transform>();
 
     public bool isPayable = false;
+    [SerializeField] private float packingTime = 3.0f;  //추후 애니메이션 시간으로 바꿀 예정
+
     private bool isPacking = false;
-
-
+    public bool IsPacking { get { return isPacking; } }
 
     public void EnqueueCustomer(Customer customer)
     {
         customers.Enqueue(customer);
     }
-    public void Pay()
+    public void Pay(Customer customer)
     {
-        Customer customer = customers.Dequeue();
         int price = customer.GetPriceToPay();
         moneyManager.InstanceMoney(price);
+        isPacking = false;
     }
 
 
@@ -44,15 +46,40 @@ public class Counter : Singleton<Counter>
         }
     }
 
-
-    public Vector3 PaperBagPos() { return  paperBag.position; }
-    public Vector3 GetPosToWait()
+    private void Update()
     {
-        Vector3 pos = firstPos.position;
-        pos.z -= lineGap * customers.Count;
-
-        return pos;
+        if (isPayable)
+        {
+            Queueing();
+        }
     }
 
 
+    public Vector3 PaperBagPos() { return paperBag.position; }
+    public Vector3 GetPosToWait()
+    {
+        Vector3 pos = firstPos.position;
+        pos.z += lineGap * customers.Count;
+
+        return pos;
+    }
+    public void RePosCustomers()
+    {
+        foreach (var customer in customers)
+        {
+            var dest = customer.transform.position;
+            dest.z -= lineGap;
+            customer.AINavMoveToward(dest);
+        }
+    }
+
+    public void Queueing()
+    {
+        if (!isPacking && customers.Count > 0)
+        {
+            var customer = customers.Dequeue();
+            customer.isPacking = true;
+            isPacking = true;
+        }
+    }
 }
