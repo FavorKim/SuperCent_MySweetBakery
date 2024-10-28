@@ -230,7 +230,7 @@ public partial class Customer : BreadStacker
         }
         public bool EvaluateCompleteCondition()
         {
-            return customer.isTableAvailable;
+            return TableManager.Instance.GetTableAvailable() != null;
         }
 
         public void OnReached()
@@ -239,9 +239,45 @@ public partial class Customer : BreadStacker
         }
         public void OnComplete()
         {
-
+            
         }
     }
+    public class EatingAtTable : CustomerNeeds
+    {
+        private Customer customer;
+        private Table table;
+        public EatingAtTable(Customer customer)
+        {
+            this.customer = customer;
+        }
+
+        public void OnEnter()
+        {
+            table = TableManager.Instance.GetTableAvailable();
+            table.IsAvailable = false;
+            customer.AINavMoveToward(table.ChairPos.position);
+        }
+        public bool EvaluateCompleteCondition()
+        {
+            customer.currentEatingTime += Time.deltaTime;
+            bool isEatEnd = customer.currentEatingTime >= customer.entireEatingTime;
+
+            return isEatEnd;
+        }
+
+        public void OnReached()
+        {
+            // 앉는 애니메이션으로 변경
+        }
+        public void OnComplete()
+        {
+            table.OnEndEatingTable();
+            Counter.Instance.Pay(customer);
+        }
+
+
+    }
+
     public class GoBack : CustomerNeeds
     {
         private Customer customer;

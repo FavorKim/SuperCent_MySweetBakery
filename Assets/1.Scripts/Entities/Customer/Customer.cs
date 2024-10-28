@@ -6,11 +6,11 @@ using UnityEngine.AI;
 public partial class Customer : BreadStacker
 {
     #region Variable
-    protected WaitingPosition posToGo;
+    private WaitingPosition posToGo;
 
     private NavMeshAgent agent;
     private CustomerNeedsManager needsManager;
-    protected CustomerUIManager UIManager { get; private set; }
+    private CustomerUIManager UIManager;
 
     public bool isPacking;
 
@@ -22,7 +22,7 @@ public partial class Customer : BreadStacker
 
     public int BreadCountToNeed { get; protected set; }
 
-    
+
 
     private int priceToPay = 0;
 
@@ -47,8 +47,9 @@ public partial class Customer : BreadStacker
         }
     }
 
-    // 나중에 테이블 매니저가 나오면 교체할 가용 테이블이 있는지에 대한 변수
-    public bool isTableAvailable = false;
+    [SerializeField] private float entireEatingTime;
+    private float currentEatingTime;
+
     #endregion
 
     #region UnityLifeCycle
@@ -92,13 +93,7 @@ public partial class Customer : BreadStacker
     }
     public void OnStartCustomerAI()
     {
-        if (needsManager == null)
-            needsManager = new CustomerNeedsManager();
-        needsManager.EnqueueNeeds(new NeedBread(this));
-        needsManager.EnqueueNeeds(new NeedPay(this));
-        needsManager.EnqueueNeeds(new NeedPacking(this));
-        needsManager.EnqueueNeeds(new IsPacking(this));
-        needsManager.EnqueueNeeds(new GoBack(this));
+        SetCustomerAI();
 
         transform.position = DestinationManager.Instance.GetEntrancePos();
     }
@@ -145,9 +140,45 @@ public partial class Customer : BreadStacker
     {
         return priceToPay;
     }
+
+    private void EnqueueCustomerAIDefault()
+    {
+        needsManager.EnqueueNeeds(new NeedBread(this));
+        needsManager.EnqueueNeeds(new NeedPay(this));
+        needsManager.EnqueueNeeds(new NeedPacking(this));
+        needsManager.EnqueueNeeds(new IsPacking(this));
+        needsManager.EnqueueNeeds(new GoBack(this));
+    }
+    private void SetCustomerAITable()
+    {
+        int rand = Random.Range(0, 2);
+        if (rand == 0)
+            EnqueueCustomerAIDefault();
+        else
+            EnqueueCustomerAITable();
+    }
+    private void EnqueueCustomerAITable()
+    {
+        needsManager.EnqueueNeeds(new NeedBread(this));
+        needsManager.EnqueueNeeds(new NeedTable(this));
+        needsManager.EnqueueNeeds(new EatingAtTable(this));
+        needsManager.EnqueueNeeds(new GoBack(this));
+    }
+
+    private void SetCustomerAI()
+    {
+        if (needsManager == null)
+            needsManager = new CustomerNeedsManager();
+
+        if (MoneyModel.Instance.GoldCount > 30 ||
+            TableManager.Instance.GetTableAvailable() != null)
+            SetCustomerAITable();
+        else
+            EnqueueCustomerAIDefault();
+    }
     #endregion
 
 
 
-    
+
 }

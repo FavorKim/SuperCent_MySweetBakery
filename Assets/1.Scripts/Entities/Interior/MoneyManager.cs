@@ -34,6 +34,7 @@ public class MoneyManager : MonoBehaviour
             money.transform.localPosition = pos;
         }
     }
+    
 
     private void Update()
     {
