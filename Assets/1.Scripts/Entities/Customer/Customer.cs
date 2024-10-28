@@ -11,6 +11,8 @@ public partial class Customer : BreadStacker
     private NavMeshAgent agent;
     private CustomerNeedsManager needsManager;
     private CustomerUIManager UIManager;
+    
+    private PaperBag bag;
 
     public bool isPacking;
 
@@ -99,7 +101,10 @@ public partial class Customer : BreadStacker
     }
     public void OnEndCustomerAI()
     {
+        if (bag != null)
+            PaperBagPoolManager.Instance.ReturnPaperBag(bag);
 
+        UIManager.OffAllUI();
         needsManager.ResetCustomerNeedsManager();
         priceToPay = 0;
         agent.isStopped = true;

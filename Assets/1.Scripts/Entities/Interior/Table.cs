@@ -7,6 +7,7 @@ public class Table : MonoBehaviour
     [SerializeField] private GameObject Trash;
 
     [SerializeField] private MoneyManager moneyManager;
+    [SerializeField] private ParticleSystem cleanVFX;
 
     private bool isAvailable = false;
     public bool IsAvailable
@@ -36,6 +37,7 @@ public class Table : MonoBehaviour
     {
         Trash.SetActive(false);
         IsAvailable = true;
+        cleanVFX.Play();
     }
 
     private void InstanceMoney(Customer customer)

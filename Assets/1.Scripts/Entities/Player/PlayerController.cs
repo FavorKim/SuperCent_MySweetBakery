@@ -1,11 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Events;
-using static UnityEditor.PlayerSettings;
 
 public class PlayerController : BreadStacker
 {
@@ -16,6 +11,8 @@ public class PlayerController : BreadStacker
 
     [SerializeField] private float moveSpeed;
     [SerializeField] private float rotSpeed;
+
+    [SerializeField] private GameObject MaxUI;
 
 
 
@@ -32,6 +29,10 @@ public class PlayerController : BreadStacker
         base.OnEnable();
         OnMove += OnMove_MoveTowards;
         OnMove += OnMove_SetPlayerAnim;
+
+        OnPushBread += OnPushPopBread;
+        OnPopBread += OnPushPopBread;
+
     }
 
     private void Update()
@@ -42,6 +43,9 @@ public class PlayerController : BreadStacker
     protected override void OnDisable()
     {
         base.OnDisable();
+        OnPopBread -= OnPushPopBread;
+        OnPushBread -= OnPushPopBread;
+
         OnMove -= OnMove_SetPlayerAnim;
         OnMove -= OnMove_MoveTowards;
     }
@@ -73,7 +77,13 @@ public class PlayerController : BreadStacker
         anim.SetBool("isMove", isMove);
     }
 
-
+    private void OnPushPopBread(Bread bread)
+    {
+        if (StackCount >= stackMaxCount)
+            MaxUI.SetActive(true);
+        else
+            MaxUI.SetActive(false);
+    }
     #endregion
 
 

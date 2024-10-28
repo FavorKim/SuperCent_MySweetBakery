@@ -71,7 +71,8 @@ public partial class Customer : BreadStacker
 
         private void OnComplete_Bread()
         {
-            customer.UIManager.SetActiveUI(UIType.BREAD, false);
+            customer.UIManager.OffAllUI();
+
             customer.posToGo.SetAvailable(true);
             customer.posToGo = null;
         }
@@ -100,7 +101,7 @@ public partial class Customer : BreadStacker
 
         public void OnComplete()
         {
-
+            customer.UIManager.OffAllUI();
         }
 
         public void OnReached_Pay()
@@ -139,6 +140,7 @@ public partial class Customer : BreadStacker
 
         public void OnComplete()
         {
+
         }
 
 
@@ -147,7 +149,6 @@ public partial class Customer : BreadStacker
     public class IsPacking : CustomerNeeds
     {
         private Customer customer;
-        private PaperBag bag;
         public IsPacking(Customer customer)
         {
             this.customer = customer;
@@ -155,11 +156,11 @@ public partial class Customer : BreadStacker
 
         public void OnEnter()
         {
-            bag = PaperBagPoolManager.Instance.GetPaperBag();
-            bag.transform.SetParent(Counter.Instance.GetPaperBagPos());
-            bag.transform.localRotation = Quaternion.identity;
-            bag.transform.localScale = Vector3.one;
-            bag.transform.localPosition = Vector3.zero;
+            customer.bag = PaperBagPoolManager.Instance.GetPaperBag();
+            customer.bag.transform.SetParent(Counter.Instance.GetPaperBagPos());
+            customer.bag.transform.localRotation = Quaternion.identity;
+            customer.bag.transform.localScale = Vector3.one;
+            customer.bag.transform.localPosition = Vector3.zero;
         }
         public bool EvaluateCompleteCondition()
         {
@@ -176,7 +177,7 @@ public partial class Customer : BreadStacker
         {
             Counter.Instance.packingLine.RePosCustomers();
             Counter.Instance.Packing_Pay(customer);
-
+            customer.UIManager.OffAllUI();
         }
         public void OnPack()
         {
@@ -190,26 +191,26 @@ public partial class Customer : BreadStacker
         }
         private bool OnPackComplete()
         {
-            if (!bag.IsPacking)
+            if (!customer.bag.IsPacking)
             {
                 if (customer.StackCount == 0)
                 {
-                    bag.PlayPackAnimation();
+                    customer.bag.PlayPackAnimation();
                 }
             }
             else
             {
-                if (bag.IsPackOver)
+                if (customer.bag.IsPackOver)
                 {
                     if (!customer.isStakcing)
                     {
-                        customer.StartCoroutine(customer.CorStackAnim(bag.transform, Counter.Instance.PaperBagPos, customer.GetStackDestPos, 20.0f, 0.01f));
-                        bag.transform.Rotate(0, 90, 0);
+                        customer.StartCoroutine(customer.CorStackAnim(customer.bag.transform, Counter.Instance.PaperBagPos, customer.GetStackDestPos, 20.0f, 0.01f));
+                        customer.bag.transform.Rotate(0, 90, 0);
                     }
                     else
                     {
                         customer.ForceSetIsStackAnim();
-                        bag.transform.SetParent(customer.transform);
+                        customer.bag.transform.SetParent(customer.transform);
                         return true;
                     }
                 }
@@ -221,7 +222,7 @@ public partial class Customer : BreadStacker
         {
             bread.SetParent(null);
             bread.transform.localRotation = Quaternion.Euler(0, 90, 0);
-            bread.SetParent(bag.transform, false);
+            bread.SetParent(customer.bag.transform, false);
             bread.localScale = Vector3.one;
         }
 
@@ -246,7 +247,7 @@ public partial class Customer : BreadStacker
 
         public void OnReached()
         {
-
+            customer.UIManager.SetActiveUI(UIType.TABLE, true);
         }
         public void OnComplete()
         {
@@ -302,6 +303,7 @@ public partial class Customer : BreadStacker
         public void OnEnter()
         {
             OnEnter_SetDestination();
+            customer.UIManager.SetPlesure();
         }
         public bool EvaluateCompleteCondition()
         {
