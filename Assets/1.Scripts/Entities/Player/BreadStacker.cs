@@ -176,7 +176,6 @@ public class BreadStacker : MonoBehaviour
         }
 
         bread.transform.position = destPos.Invoke();
-        bread.transform.localRotation = Quaternion.identity;
 
         isStakcing = false;
     }

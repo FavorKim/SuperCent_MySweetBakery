@@ -184,6 +184,7 @@ public partial class Customer : BreadStacker
             {
                 Bread bread = customer.PopBread();
                 customer.priceToPay += bread.price;
+                SetBreadTransform(bread.transform);
                 customer.StartCoroutine(customer.CorStackAnim(bread.transform, customer.GetStackStartPos, Counter.Instance.PaperBagPos, 20.0f, 0.01f));
             }
         }
@@ -203,6 +204,7 @@ public partial class Customer : BreadStacker
                     if (!customer.isStakcing)
                     {
                         customer.StartCoroutine(customer.CorStackAnim(bag.transform, Counter.Instance.PaperBagPos, customer.GetStackDestPos, 20.0f, 0.01f));
+                        bag.transform.Rotate(0, 90, 0);
                     }
                     else
                     {
@@ -213,6 +215,14 @@ public partial class Customer : BreadStacker
                 }
             }
             return false;
+        }
+
+        private void SetBreadTransform(Transform bread)
+        {
+            bread.SetParent(null);
+            bread.transform.localRotation = Quaternion.Euler(0, 90, 0);
+            bread.SetParent(bag.transform, false);
+            bread.localScale = Vector3.one;
         }
 
     }
@@ -268,7 +278,7 @@ public partial class Customer : BreadStacker
 
         public void OnReached()
         {
-            customer.transform.rotation = Quaternion.identity;
+            customer.transform.rotation = Quaternion.Euler(0, 180, 0);
             customer.anim.SetBool("isSitting",true);
             // 앉는 애니메이션으로 변경
         }
