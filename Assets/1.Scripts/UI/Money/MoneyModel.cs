@@ -16,11 +16,17 @@ public class MoneyModel
     }
 
     private int goldCount = 0;
+    public int GoldCount { get { return goldCount; } }  
     public event Action<int> OnPlusGold;
    
     public void PlusGold(int goldPlus)
     {
         goldCount += goldPlus;
+        OnPlusGold?.Invoke(goldCount);
+    }
+    public void MinusGold(int goldMinus)
+    {
+        goldCount -= goldMinus;
         OnPlusGold?.Invoke(goldCount);
     }
 

@@ -10,10 +10,11 @@ public class MoneyManager : MonoBehaviour
 
     private Stack<GameObject> moneyStack = new Stack<GameObject>();
 
-    [SerializeField] private float lerpSpeed = 0.1f;
-    [SerializeField] private float lerpDelay = 0.05f;
+    private float lerpSpeed = 50f;
+    private float lerpDelay = 0.02f;
 
     private bool isEarning = false;
+    private bool isLerping = false;
 
     public void InstanceMoney(int price)
     {
@@ -36,7 +37,7 @@ public class MoneyManager : MonoBehaviour
 
     private void Update()
     {
-        if (isEarning && moneyStack.Count > 0)
+        if (isEarning && moneyStack.Count > 0 && !isLerping)
         {
             StartCoroutine(CorEarnMoney());
         }
@@ -45,9 +46,8 @@ public class MoneyManager : MonoBehaviour
 
     private IEnumerator CorEarnMoney()
     {
-
+        isLerping = true;
         var money = moneyStack.Pop();
-        yield return new WaitForSeconds(lerpDelay);
         Vector3 destPos = transform.position + Vector3.up * 5;
 
         while ((money.transform.position - destPos).sqrMagnitude > 0.1f)
@@ -58,6 +58,8 @@ public class MoneyManager : MonoBehaviour
         money.transform.position = destPos;
         MoneyPoolManager.Instance.ReturnMoney(money);
         MoneyModel.Instance.PlusGold(1);
+        yield return new WaitForSeconds(lerpDelay);
+        isLerping = false;
     }
 
 

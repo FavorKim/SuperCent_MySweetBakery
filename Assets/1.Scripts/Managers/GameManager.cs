@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private float entranceTime = 15.0f;
-    private float delayedTime = 0f;
+    private float delayedTime = 15.0f;
 
     void SetCustomer()
     {
