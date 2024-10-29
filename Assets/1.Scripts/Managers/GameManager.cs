@@ -38,11 +38,11 @@ public class GameManager : Singleton<GameManager>
 
     public void PointCamUnlockActive(int index)
     {
-        if (!GameInfo.Instance.HavePointed(index))
+        if (!TutorialInfo.Instance.HavePointed(index))
         {
             GameObject pointCam = index == 1 ? PointCam_Unlock1 : PointCam_Unlock2;
             StartCoroutine(CorPointUnlockCam(pointCam));
-            GameInfo.Instance.Point(index);
+            TutorialInfo.Instance.Point(index);
         }
     }
 

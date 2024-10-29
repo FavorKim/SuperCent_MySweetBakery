@@ -2,21 +2,21 @@
 
 using System.Collections.Generic;
 
-public class GameInfo
+public class TutorialInfo
 {
-    private static GameInfo instance;
-    public static GameInfo Instance
+    private static TutorialInfo instance;
+    public static TutorialInfo Instance
     {
         get
         {
             if(instance == null)
-                instance = new GameInfo();
+                instance = new TutorialInfo();
 
             return instance;
         }
     }
 
-    public GameInfo()
+    public TutorialInfo()
     {
         havePointedList.Add(false);
         havePointedList.Add(false);

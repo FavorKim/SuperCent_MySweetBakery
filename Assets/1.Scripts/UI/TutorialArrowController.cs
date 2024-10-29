@@ -18,7 +18,7 @@ public class TutorialArrowController : Singleton<TutorialArrowController>
 
     protected override void OnStart()
     {
-        if (!GameInfo.Instance.IsTutorialEnd)
+        if (!TutorialInfo.Instance.IsTutorialEnd)
         {
             InitPosQueue();
             ProgressTutorial();
@@ -27,7 +27,7 @@ public class TutorialArrowController : Singleton<TutorialArrowController>
 
     private void Update()
     {
-        if (!GameInfo.Instance.IsTutorialEnd && CurrentTutorialLevel <= 5)
+        if (!TutorialInfo.Instance.IsTutorialEnd && CurrentTutorialLevel <= 5)
         {
             Vector3 playerArrowLookAt = new Vector3(currentPos.position.x, 1, currentPos.position.z);
             playerArrow.LookAt(playerArrowLookAt);
@@ -61,7 +61,7 @@ public class TutorialArrowController : Singleton<TutorialArrowController>
         {
             Arrow.SetActive(false);
             playerArrow.gameObject.SetActive(false);
-            GameInfo.Instance.EndTutorial();
+            TutorialInfo.Instance.EndTutorial();
             return;
         }
 
