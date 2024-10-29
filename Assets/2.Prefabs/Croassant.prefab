@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   breadName: 0
-  bakeForce: 5
+  bakeForce: 4.7
   price: 7
 --- !u!54 &9126298569558006652
 Rigidbody:

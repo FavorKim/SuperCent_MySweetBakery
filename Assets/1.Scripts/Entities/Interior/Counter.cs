@@ -26,7 +26,6 @@ public class Counter : Singleton<Counter>
     {
         int price = customer.GetPriceToPay();
         moneyManager.InstanceMoney(price);
-        packingLine.IsStop = false;
         if (TutorialArrowController.Instance.CurrentTutorialLevel == 3)
             OnTutorialClear.Invoke();
     }
@@ -47,14 +46,6 @@ public class Counter : Singleton<Counter>
         }
     }
 
-    private void Update()
-    {
-        if (isPayable)
-        {
-            packingLine.Queueing();
-            tableLine.Queueing();
-        }
-    }
 
 
     public Vector3 PaperBagPos() { return paperBag.position; }

@@ -372,7 +372,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stackPos: {fileID: 8644460254811406849}
   stackStartPos: {fileID: 1491393188914471657}
-  isPacking: 0
+  isReady: 0
   rotSpeed: 10
   breadCountRandomRange: 3
   entireEatingTime: 15

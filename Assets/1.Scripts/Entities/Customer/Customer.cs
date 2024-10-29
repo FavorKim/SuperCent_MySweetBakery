@@ -14,7 +14,7 @@ public partial class Customer : BreadStacker
     
     private PaperBag bag;
 
-    public bool isPacking;
+    public bool isReady;
 
     [SerializeField] private float rotSpeed = 20.0f;
 
@@ -68,9 +68,14 @@ public partial class Customer : BreadStacker
     }
     private void Update()
     {
+        SetAnimatorOnMove();
+
+    }
+    private void FixedUpdate()
+    {
+        IsReached = !AgentIsMove();
         needsManager.RunNeedsQueue();
 
-        SetAnimatorOnMove();
     }
     protected override void OnDisable()
     {
@@ -125,15 +130,16 @@ public partial class Customer : BreadStacker
     }
     private bool AgentIsMove()
     {
-        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+        if (!agent.pathPending)
         {
-            if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+            if (agent.remainingDistance <= agent.stoppingDistance)
             {
-                IsReached = true;
-                return false;
+                if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+                {
+                    return false;
+                }
             }
         }
-        IsReached = false;
         return true;
     }
     private void SetAnimatorOnMove()

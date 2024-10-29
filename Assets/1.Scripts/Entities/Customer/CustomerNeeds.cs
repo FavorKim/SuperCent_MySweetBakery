@@ -95,7 +95,7 @@ public partial class Customer : BreadStacker
         }
         public bool EvaluateCompleteCondition()
         {
-            return Counter.Instance.isPayable && customer.IsReached;
+            return Counter.Instance.isPayable && customer.isReady;
         }
         public void OnReached()
         {
@@ -133,7 +133,7 @@ public partial class Customer : BreadStacker
         }
         public bool EvaluateCompleteCondition()
         {
-            return customer.isPacking && customer.IsReached;
+            return customer.IsReached;
         }
         public void OnReached()
         {
@@ -163,12 +163,14 @@ public partial class Customer : BreadStacker
             customer.bag.transform.localRotation = Quaternion.identity;
             customer.bag.transform.localScale = Vector3.one;
             customer.bag.transform.localPosition = Vector3.zero;
+
+
         }
         public bool EvaluateCompleteCondition()
         {
-            OnPack();
+            BreadPacking();
 
-            return OnPackComplete();
+            return IsCompletePacking();
         }
 
         public void OnReached()
@@ -178,10 +180,13 @@ public partial class Customer : BreadStacker
         public void OnComplete()
         {
             Counter.Instance.Packing_Pay(customer);
+
             Counter.Instance.packingLine.RePosCustomers();
+            Counter.Instance.packingLine.Queueing();
+
             customer.UIManager.OffAllUI();
         }
-        public void OnPack()
+        public void BreadPacking()
         {
             if (!customer.isStakcing && customer.StackCount > 0)
             {
@@ -191,7 +196,7 @@ public partial class Customer : BreadStacker
                 customer.StartCoroutine(customer.CorStackAnim(bread.transform, customer.GetStackStartPos, Counter.Instance.PaperBagPos, 10.0f, 0.1f));
             }
         }
-        private bool OnPackComplete()
+        private bool IsCompletePacking()
         {
             if (!customer.bag.IsPacking)
             {
@@ -258,7 +263,7 @@ public partial class Customer : BreadStacker
         }
         public void OnComplete()
         {
-            Counter.Instance.tableLine.RePosCustomers();
+            Counter.Instance.tableLine.Queueing();
         }
     }
     public class EatingAtTable : CustomerNeeds
@@ -275,7 +280,6 @@ public partial class Customer : BreadStacker
             table = TableManager.Instance.GetTableAvailable();
             table.IsAvailable = false;
             customer.AINavMoveToward(table.ChairPos.position);
-            
         }
         public bool EvaluateCompleteCondition()
         {

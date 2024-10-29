@@ -9,11 +9,12 @@ public class CustomerLine : MonoBehaviour
     private float lineGap = 1.24f;
     private Queue<Customer> customers = new Queue<Customer>();
 
-    public bool IsStop { get; set; }
 
 
     public void EnqueueCustomer(Customer customer)
     {
+        if (customers.Count == 0)
+            customer.isReady = true;
         customers.Enqueue(customer);
     }
 
@@ -45,11 +46,18 @@ public class CustomerLine : MonoBehaviour
 
     public void Queueing()
     {
-        if (customers.Count > 0 && !IsStop)
+        if (customers.Count > 0)
         {
-            var customer = customers.Dequeue();
-            customer.isPacking = true;
-            IsStop = true;
+            var customer = customers.Peek();
+            if(customer.isReady == true)
+            {
+                customers.Dequeue();
+            }
+            if(customers.Count >0)
+            {
+                customer = customers.Peek();
+                customer.isReady = true;
+            }
         }
     }
 }
