@@ -19,6 +19,8 @@ public class CustomerUIManager : MonoBehaviour
     [SerializeField] private TMP_Text Txt_Bread;
     [SerializeField] private GameObject PayUI;
     [SerializeField] private GameObject TableUI;
+
+    [SerializeField] private Transform VFXPos;
     private ParticleSystem VFX_EmojiSmile;
 
     private Dictionary<UIType, GameObject> uITypeDict = new Dictionary<UIType, GameObject>();
@@ -37,6 +39,9 @@ public class CustomerUIManager : MonoBehaviour
     private void Start()
     {
         VFX_EmojiSmile = GameManager.Instance.VFXManager.GetResource("VFX_EmojiSmile");
+        var obj = GameObject.Instantiate(VFX_EmojiSmile, VFXPos);
+        obj.transform.localPosition = Vector3.zero;
+        VFX_EmojiSmile = obj.GetComponent<ParticleSystem>();
     }
 
     public void SetBreadText(string text)

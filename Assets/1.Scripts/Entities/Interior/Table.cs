@@ -7,7 +7,10 @@ public class Table : MonoBehaviour
     [SerializeField] private GameObject Trash;
 
     [SerializeField] private MoneyManager moneyManager;
+    [SerializeField] private Transform VFXPos;
+
     private ParticleSystem VFX_Clean;
+
     
 
     private bool isAvailable = false;
@@ -37,6 +40,9 @@ public class Table : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         SFX_Trash = GameManager.Instance.SFXManager.GetResource("Trash");
         VFX_Clean = GameManager.Instance.VFXManager.GetResource("VFX_Clean");
+        var obj = Instantiate(VFX_Clean,VFXPos);
+        obj.transform.localPosition = Vector3.zero;
+        VFX_Clean = obj.GetComponent<ParticleSystem>();
     }
 
     public void OnEndEatingTable(Customer customer)

@@ -174,8 +174,8 @@ public partial class Customer : BreadStacker
         }
         public void OnComplete()
         {
-            Counter.Instance.packingLine.RePosCustomers();
             Counter.Instance.Packing_Pay(customer);
+            Counter.Instance.packingLine.RePosCustomers();
             customer.UIManager.OffAllUI();
         }
         public void OnPack()
@@ -185,7 +185,7 @@ public partial class Customer : BreadStacker
                 Bread bread = customer.PopBread();
                 customer.priceToPay += bread.price;
                 SetBreadTransform(bread.transform);
-                customer.StartCoroutine(customer.CorStackAnim(bread.transform, customer.GetStackStartPos, Counter.Instance.PaperBagPos, 20.0f, 0.01f));
+                customer.StartCoroutine(customer.CorStackAnim(bread.transform, customer.GetStackStartPos, Counter.Instance.PaperBagPos, 10.0f, 0.1f));
             }
         }
         private bool OnPackComplete()
@@ -203,7 +203,7 @@ public partial class Customer : BreadStacker
                 {
                     if (!customer.isStakcing)
                     {
-                        customer.StartCoroutine(customer.CorStackAnim(customer.bag.transform, Counter.Instance.PaperBagPos, customer.GetStackDestPos, 20.0f, 0.01f));
+                        customer.StartCoroutine(customer.CorStackAnim(customer.bag.transform, Counter.Instance.PaperBagPos, customer.GetStackDestPos, 10.0f, 0.01f));
                         customer.bag.transform.Rotate(0, 90, 0);
                     }
                     else
@@ -225,6 +225,8 @@ public partial class Customer : BreadStacker
             bread.localScale = Vector3.one;
         }
 
+
+
     }
     public class NeedTable : CustomerNeeds
     {
@@ -237,8 +239,8 @@ public partial class Customer : BreadStacker
         public void OnEnter()
         {
             Vector3 dest = Counter.Instance.tableLine.GetPosToWait();
-            Counter.Instance.tableLine.EnqueueCustomer(customer);
             customer.AINavMoveToward(dest);
+            Counter.Instance.tableLine.EnqueueCustomer(customer);
         }
         public bool EvaluateCompleteCondition()
         {
@@ -248,7 +250,8 @@ public partial class Customer : BreadStacker
         public void OnReached()
         {
             customer.UIManager.SetActiveUI(UIType.TABLE, true);
-            customer.transform.rotation = Quaternion.LookRotation(Counter.Instance.transform.position);
+            customer.transform.rotation = Quaternion.LookRotation(Vector3.back);
+
         }
         public void OnComplete()
         {
@@ -281,7 +284,7 @@ public partial class Customer : BreadStacker
 
         public void OnReached()
         {
-            customer.transform.rotation = Quaternion.Euler(0, 180, 0);
+            customer.transform.rotation = Quaternion.LookRotation(Vector3.back);
             customer.anim.SetBool("isSitting",true);
             customer.UIManager.OffAllUI();
         }

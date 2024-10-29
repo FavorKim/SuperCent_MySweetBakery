@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: a67beb40f1c4d21419e31f01749a8a46, type: 2}
+  m_NavMeshData: {fileID: 0}
 --- !u!1 &39912416
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 89519322}
   - component: {fileID: 89519323}
   - component: {fileID: 89519324}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Moneys
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -248,7 +248,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &91758081
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -919,10 +919,8 @@ GameObject:
   - component: {fileID: 425145863}
   - component: {fileID: 425145864}
   - component: {fileID: 425145865}
-  - component: {fileID: 425145866}
-  - component: {fileID: 425145867}
   m_Layer: 0
-  m_Name: PosTable
+  m_Name: Counter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -979,115 +977,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.3069046, y: 0.91257215, z: 1.2967663}
   m_Center: {x: 0.123768926, y: 0.4337139, z: 0.14838314}
---- !u!114 &425145866
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 425145862}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e020409e76621d43a296903358354f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firstPos: {fileID: 1877846295}
---- !u!82 &425145867
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 425145862}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &447345047
 GameObject:
   m_ObjectHideFlags: 0
@@ -1851,7 +1740,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7a5ed3bfd6d2834f97a6a66ab6e76d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entranceTime: 5
+  entranceTime: 10
 --- !u!4 &805269008
 Transform:
   m_ObjectHideFlags: 0
@@ -4624,9 +4513,17 @@ PrefabInstance:
       propertyPath: m_PresetInfoIsWorld
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5501114463176311041, guid: c6050c173b9a16049ab7223dadc19139, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5507241095459374241, guid: c6050c173b9a16049ab7223dadc19139, type: 3}
       propertyPath: m_LocalPosition.y
       value: 31.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8128625401957214127, guid: c6050c173b9a16049ab7223dadc19139, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6050c173b9a16049ab7223dadc19139, type: 3}

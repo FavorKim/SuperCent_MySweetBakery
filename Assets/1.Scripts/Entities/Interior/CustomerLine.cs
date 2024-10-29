@@ -24,13 +24,22 @@ public class CustomerLine : MonoBehaviour
 
         return pos;
     }
+    private Vector3 GetPosToWait(int index)
+    {
+        Vector3 pos = firstPos.position;
+        pos.z += lineGap * index;
+
+        return pos;
+    }
     public void RePosCustomers()
     {
+        int count = 0;
         foreach (var customer in customers)
         {
-            var dest = customer.transform.position;
+            var dest = GetPosToWait(count);
             dest.z -= lineGap;
             customer.AINavMoveToward(dest);
+            count++;
         }
     }
 

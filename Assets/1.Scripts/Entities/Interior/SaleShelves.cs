@@ -43,6 +43,16 @@ public class SaleShelves : MonoBehaviour
 
     private UnityEvent OnTutorialClear = new UnityEvent();
 
+    private bool isCustomerUsable = false;
+    public bool IsCustomerUsable
+    {
+        get { return isCustomerUsable; }
+        set
+        {
+            isCustomerUsable = value;
+        }
+    }
+
     private void Awake()
     {
         TutorialArrowController.Instance.AddCondition(OnTutorialClear, 1);
@@ -111,6 +121,4 @@ public class SaleShelves : MonoBehaviour
     {
         return breadStacks.Count < maxStoreCount;
     }
-
-    
 }

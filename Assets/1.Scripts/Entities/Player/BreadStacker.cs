@@ -15,9 +15,9 @@ public class BreadStacker : MonoBehaviour
     
     private float stackHeight = 0.3f;
     private float stackDelay = 0.1f;
-    [SerializeField] private float stackLerpSpeed = 20.0f;
+    private float stackLerpSpeed = 20.0f;
     
-    [SerializeField] protected int stackMaxCount = 8;
+    protected int stackMaxCount = 8;
     protected bool isStakcing = false;
 
     [SerializeField] private Transform stackPos;

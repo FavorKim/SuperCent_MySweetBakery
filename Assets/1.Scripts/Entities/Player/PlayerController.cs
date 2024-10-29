@@ -103,10 +103,19 @@ public class PlayerController : BreadStacker
             {
                 shelves.OnStackBread(bread);
                 StartCoroutine(CorStackAnim(bread.transform, GetStackStartPos, shelves.GetPosToStack));
+                shelves.IsCustomerUsable = false;
             }
         }
+        shelves.IsCustomerUsable = !isStakcing;
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.TryGetComponent(out SaleShelves shelves))
+        {
+            shelves.IsCustomerUsable = false;
+        }
+    }
 
     #region Method
 

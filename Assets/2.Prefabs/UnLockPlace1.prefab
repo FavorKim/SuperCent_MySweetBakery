@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5485406396698126117}
   - component: {fileID: 4904554750681023169}
   - component: {fileID: 5922505621423090180}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Unlock2nd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,7 +53,6 @@ MonoBehaviour:
   objToDisable: {fileID: 181797542692925463}
   goldRemaining: {fileID: 2092566177004873829}
   lerpPos: {fileID: 2828362179841258008}
-  UnlockVFX: {fileID: 5670862239284667023}
   goldToUnlock: 30
   isPayable: 0
 --- !u!65 &5922505621423090180
@@ -642,7 +641,7 @@ GameObject:
   - component: {fileID: 5415973623562356435}
   - component: {fileID: 5127607012550058460}
   - component: {fileID: 7178031444869050464}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Canvas (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1176,7 +1175,7 @@ GameObject:
   - component: {fileID: 5119206482818682962}
   - component: {fileID: 4196956738295962717}
   - component: {fileID: 2092566177004873829}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: MoneyRemaining
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1598,7 +1597,7 @@ GameObject:
   - component: {fileID: 7693579261939172859}
   - component: {fileID: 8260707531788058968}
   - component: {fileID: 8109700060170803809}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: UnLock1st
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1640,7 +1639,6 @@ MonoBehaviour:
   objToDisable: {fileID: 6364001463996090169}
   goldRemaining: {fileID: 5715795283333239821}
   lerpPos: {fileID: 3895409707275977816}
-  UnlockVFX: {fileID: 6654136659714019266}
   goldToUnlock: 30
   isPayable: 0
 --- !u!65 &8109700060170803809
@@ -1843,11 +1841,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a5be0b568a4c774ba0fc24c35291f86, type: 3}
---- !u!198 &6654136659714019266 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 8076463902404956292, guid: 2a5be0b568a4c774ba0fc24c35291f86, type: 3}
-  m_PrefabInstance: {fileID: 3192316741459140422}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7193892320085472656 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5735534077292751574, guid: 2a5be0b568a4c774ba0fc24c35291f86, type: 3}
@@ -1984,11 +1977,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a5be0b568a4c774ba0fc24c35291f86, type: 3}
---- !u!198 &5670862239284667023 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 8076463902404956292, guid: 2a5be0b568a4c774ba0fc24c35291f86, type: 3}
-  m_PrefabInstance: {fileID: 4514768509009523211}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4821918000432604299
 PrefabInstance:
   m_ObjectHideFlags: 0

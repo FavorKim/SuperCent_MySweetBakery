@@ -84,7 +84,7 @@ public partial class Customer : BreadStacker
     #region events
     protected override void OnTriggerStay_SaleShelves(SaleShelves shelves)
     {
-        if (BreadCountToNeed > 0 && IsReached)
+        if (BreadCountToNeed > 0 && IsReached && shelves.IsCustomerUsable)
         {
             Bread bread = shelves.PopBread();
             if (bread != null)
