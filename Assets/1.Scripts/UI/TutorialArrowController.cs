@@ -24,7 +24,7 @@ public class TutorialArrowController : Singleton<TutorialArrowController>
 
     private void Update()
     {
-        if (CurrentTutorialLevel < 5)
+        if (CurrentTutorialLevel <= 5)
         {
             Vector3 playerArrowLookAt = new Vector3(currentPos.position.x, 1, currentPos.position.z);
             playerArrow.LookAt(playerArrowLookAt);
@@ -54,7 +54,12 @@ public class TutorialArrowController : Singleton<TutorialArrowController>
 
     private void ProgressTutorial()
     {
-        if (CurrentTutorialLevel >= 5) return;
+        if (posQueue.Count == 0) 
+        {
+            Arrow.SetActive(false);
+            playerArrow.gameObject.SetActive(false);
+            return; 
+        }
 
         currentPos = posQueue.Dequeue();
         Arrow.transform.position = currentPos.position;
