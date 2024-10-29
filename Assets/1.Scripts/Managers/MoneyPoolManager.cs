@@ -9,7 +9,22 @@ public class MoneyPoolManager : Singleton<MoneyPoolManager>
 
     private ObjectPool moneyPool;
 
-    
+    private int entireMoneySpawned = 0;
+    private int EntireMoneySpawned
+    {
+        get { return entireMoneySpawned; }
+        set
+        {
+            if (entireMoneySpawned != value)
+            {
+                entireMoneySpawned = value;
+            }
+            if (entireMoneySpawned >= 30)
+            {
+                GameManager.Instance.PointCamUnlockActive(1);
+            }
+        }
+    }
 
     private void InitPool()
     {
@@ -18,6 +33,7 @@ public class MoneyPoolManager : Singleton<MoneyPoolManager>
 
     public GameObject GetMoney()
     {
+        EntireMoneySpawned = entireMoneySpawned + 1;
         return moneyPool.GetObject();
     }
 

@@ -9,7 +9,7 @@ public class TutorialArrowController : Singleton<TutorialArrowController>
     [SerializeField] Transform playerArrow;
 
     private Queue<ArrowPos> posQueue = new Queue<ArrowPos>();
-    private List<UnityEvent> conditionList = new List<UnityEvent>() {null,null,null,null,null };
+    private List<UnityEvent> conditionList = new List<UnityEvent>() { null, null, null, null, null };
 
     private ArrowPos currentPos;
 
@@ -18,13 +18,16 @@ public class TutorialArrowController : Singleton<TutorialArrowController>
 
     protected override void OnStart()
     {
-        InitPosQueue();
-        ProgressTutorial();
+        if (!GameInfo.Instance.IsTutorialEnd)
+        {
+            InitPosQueue();
+            ProgressTutorial();
+        }
     }
 
     private void Update()
     {
-        if (CurrentTutorialLevel <= 5)
+        if (!GameInfo.Instance.IsTutorialEnd && CurrentTutorialLevel <= 5)
         {
             Vector3 playerArrowLookAt = new Vector3(currentPos.position.x, 1, currentPos.position.z);
             playerArrow.LookAt(playerArrowLookAt);
@@ -48,17 +51,18 @@ public class TutorialArrowController : Singleton<TutorialArrowController>
                 Debug.LogError($"{i}번째 ConditionList가 비어있습니다.");
             }
         }
-        
-        
+
+
     }
 
     private void ProgressTutorial()
     {
-        if (posQueue.Count == 0) 
+        if (posQueue.Count == 0)
         {
             Arrow.SetActive(false);
             playerArrow.gameObject.SetActive(false);
-            return; 
+            GameInfo.Instance.EndTutorial();
+            return;
         }
 
         currentPos = posQueue.Dequeue();

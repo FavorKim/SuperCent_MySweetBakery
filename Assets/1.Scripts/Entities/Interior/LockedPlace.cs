@@ -99,6 +99,8 @@ public class LockedPlace : MonoBehaviour
         objToEnable.SetActive(true);
         objToDisable.SetActive(false);
         VFX_AppearSignStand.Play();
+
+        GameManager.Instance.PointCamUnlockActive(2);
     }
 
     private void SetGoldRemainingText(int goldAmount)

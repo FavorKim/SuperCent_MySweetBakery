@@ -23,6 +23,7 @@ public class MoneyManager : MonoBehaviour
     private AudioClip SFX_CostMoney;
     private AudioClip SFX_Cash;
 
+
     private void Awake()
     {
         TutorialArrowController.Instance.AddCondition(OnTutorialClear, 3);

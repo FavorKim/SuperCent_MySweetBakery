@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
+    [SerializeField] private GameObject PointCam_Unlock1;
+    [SerializeField] private GameObject PointCam_Unlock2;
+    private float pointDuration = 1.5f;
+
+
     [SerializeField] private float entranceTime = 15.0f;
     private float delayedTime = 15.0f;
 
@@ -31,5 +36,20 @@ public class GameManager : Singleton<GameManager>
             SetCustomer();
     }
 
+    public void PointCamUnlockActive(int index)
+    {
+        if (!GameInfo.Instance.HavePointed(index))
+        {
+            GameObject pointCam = index == 1 ? PointCam_Unlock1 : PointCam_Unlock2;
+            StartCoroutine(CorPointUnlockCam(pointCam));
+            GameInfo.Instance.Point(index);
+        }
+    }
 
+    IEnumerator CorPointUnlockCam(GameObject obj)
+    {
+        obj.SetActive(true);
+        yield return new WaitForSeconds(pointDuration);
+        obj.SetActive(false);
+    }
 }
