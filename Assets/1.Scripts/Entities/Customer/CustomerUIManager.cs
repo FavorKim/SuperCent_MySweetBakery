@@ -19,7 +19,7 @@ public class CustomerUIManager : MonoBehaviour
     [SerializeField] private TMP_Text Txt_Bread;
     [SerializeField] private GameObject PayUI;
     [SerializeField] private GameObject TableUI;
-    [SerializeField] private ParticleSystem PleasureVFX;
+    private ParticleSystem VFX_EmojiSmile;
 
     private Dictionary<UIType, GameObject> uITypeDict = new Dictionary<UIType, GameObject>();
 
@@ -33,7 +33,11 @@ public class CustomerUIManager : MonoBehaviour
             return uITypeDict;
         }
     }
-    
+
+    private void Start()
+    {
+        VFX_EmojiSmile = GameManager.Instance.VFXManager.GetResource("VFX_EmojiSmile");
+    }
 
     public void SetBreadText(string text)
     {
@@ -63,7 +67,7 @@ public class CustomerUIManager : MonoBehaviour
         {
             ui.SetActive(false);
         }
-        PleasureVFX.Play();
+        VFX_EmojiSmile.Play();
     }
     public void OffAllUI()
     {

@@ -23,6 +23,11 @@ public class BreadStacker : MonoBehaviour
     [SerializeField] private Transform stackPos;
     [SerializeField] private Transform stackStartPos;
 
+    private AudioClip SFX_GetObject;
+    private AudioClip SFX_PutObject;
+
+    protected AudioSource audioSource;
+
     public int StackCount
     {
         get
@@ -38,22 +43,30 @@ public class BreadStacker : MonoBehaviour
         OnPushBread += OnPushBread_PushBread;
         OnPushBread += OnPushBread_PlayStackAnimation;
         OnPushBread += OnChangedBreadStack;
+        OnPushBread += OnPushBread_PlaySFX;
 
         OnPopBread += OnPopBread_SetBreadTransform;
         OnPopBread += OnChangedBreadStack;
+        OnPopBread += OnPopBread_PlaySFX;
 
     }
     protected virtual void Awake()
     {
         anim = GetComponentInChildren<Animator>();
+        audioSource = GetComponent<AudioSource>();
+
+        SFX_GetObject = GameManager.Instance.SFXManager.GetResource("Get_Object");
+        SFX_PutObject = GameManager.Instance.SFXManager.GetResource("Put_Object");
     }
 
     protected virtual void OnDisable()
     {
+        OnPushBread -= OnPushBread_PlaySFX;
         OnPushBread -= OnChangedBreadStack;
         OnPushBread -= OnPushBread_PlayStackAnimation;
         OnPushBread -= OnPushBread_PushBread;
 
+        OnPopBread -= OnPopBread_PlaySFX;
         OnPopBread -= OnChangedBreadStack;
         OnPopBread -= OnPopBread_SetBreadTransform;
     }
@@ -77,7 +90,18 @@ public class BreadStacker : MonoBehaviour
         bread.OnPushed();
         breadStack.Push(bread);
     }
-    
+    private void OnPushBread_PlaySFX(Bread bread)
+    {
+        audioSource.clip = SFX_GetObject;
+        audioSource.Play();
+    }
+
+    private void OnPopBread_PlaySFX(Bread bread)
+    {
+        audioSource.clip = SFX_PutObject;
+        audioSource.Play();
+    }
+
 
     protected virtual void OnTriggerStay_Storage(BreadStorage storage) { }
     protected virtual void OnTriggerStay_SaleShelves(SaleShelves shelves) { }

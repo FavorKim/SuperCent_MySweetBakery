@@ -15,7 +15,6 @@ public class PlayerController : BreadStacker
     [SerializeField] private GameObject MaxUI;
 
 
-
     private event Action<Vector3> OnMove;
 
     protected override void Awake()

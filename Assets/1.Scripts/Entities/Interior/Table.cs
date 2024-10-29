@@ -7,7 +7,8 @@ public class Table : MonoBehaviour
     [SerializeField] private GameObject Trash;
 
     [SerializeField] private MoneyManager moneyManager;
-    [SerializeField] private ParticleSystem cleanVFX;
+    private ParticleSystem VFX_Clean;
+    
 
     private bool isAvailable = false;
     public bool IsAvailable
@@ -22,10 +23,20 @@ public class Table : MonoBehaviour
     [SerializeField] private Transform chairPos;
     public Transform ChairPos { get { return chairPos; } }
 
+    private AudioSource audioSource;
+    private AudioClip SFX_Trash;
+
     private void OnEnable()
     {
         IsAvailable = true;
         TableManager.Instance.AddTable(this);
+    }
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        SFX_Trash = GameManager.Instance.SFXManager.GetResource("Trash");
+        VFX_Clean = GameManager.Instance.VFXManager.GetResource("VFX_Clean");
     }
 
     public void OnEndEatingTable(Customer customer)
@@ -37,7 +48,14 @@ public class Table : MonoBehaviour
     {
         Trash.SetActive(false);
         IsAvailable = true;
-        cleanVFX.Play();
+        VFX_Clean.Play();
+        PlayTrashSFX();
+    }
+
+    private void PlayTrashSFX()
+    {
+        audioSource.clip = SFX_Trash;
+        audioSource.Play();
     }
 
     private void InstanceMoney(Customer customer)

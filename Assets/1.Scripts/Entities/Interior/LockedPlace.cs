@@ -11,7 +11,7 @@ public class LockedPlace : MonoBehaviour
     [SerializeField] private GameObject objToDisable;
     [SerializeField] private TMP_Text goldRemaining;
     [SerializeField] private Transform lerpPos;
-    [SerializeField] private ParticleSystem UnlockVFX;
+    private ParticleSystem VFX_AppearSignStand;
 
     private StringBuilder goldRemainingSb;
 
@@ -45,6 +45,7 @@ public class LockedPlace : MonoBehaviour
     private void Awake()
     {
         TutorialArrowController.Instance.AddCondition(OnTutorialClear, 4);
+        VFX_AppearSignStand = GameManager.Instance.VFXManager.GetResource("VFX_AppearSignStand");
     }
     private void Start()
     {
@@ -97,7 +98,7 @@ public class LockedPlace : MonoBehaviour
             OnTutorialClear.Invoke();
         objToEnable.SetActive(true);
         objToDisable.SetActive(false);
-        UnlockVFX.Play();
+        VFX_AppearSignStand.Play();
     }
 
     private void SetGoldRemainingText(int goldAmount)

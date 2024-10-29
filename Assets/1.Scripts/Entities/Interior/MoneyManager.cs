@@ -19,9 +19,16 @@ public class MoneyManager : MonoBehaviour
 
     private UnityEvent OnTutorialClear = new UnityEvent();
 
+    private AudioSource audioSource;
+    private AudioClip SFX_CostMoney;
+    private AudioClip SFX_Cash;
+
     private void Awake()
     {
         TutorialArrowController.Instance.AddCondition(OnTutorialClear, 3);
+        audioSource = gameObject.AddComponent<AudioSource>();
+        SFX_CostMoney = GameManager.Instance.SFXManager.GetResource("Cost_Money");
+        SFX_Cash = GameManager.Instance.SFXManager.GetResource("Cash");
     }
 
     public void InstanceMoney(int price)
@@ -41,6 +48,7 @@ public class MoneyManager : MonoBehaviour
 
             money.transform.localPosition = pos;
         }
+        PlayCreateSFX();
     }
     
 
@@ -69,10 +77,21 @@ public class MoneyManager : MonoBehaviour
         money.transform.position = destPos;
         MoneyPoolManager.Instance.ReturnMoney(money);
         MoneyModel.Instance.PlusGold(1);
+        PlayEarnSFX();
         yield return new WaitForSeconds(lerpDelay);
         isLerping = false;
     }
 
+    private void PlayEarnSFX()
+    {
+        audioSource.clip = SFX_CostMoney;
+        audioSource.Play();
+    }
+    private void PlayCreateSFX()
+    {
+        audioSource.clip = SFX_Cash;
+        audioSource.Play();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
