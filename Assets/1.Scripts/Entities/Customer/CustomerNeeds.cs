@@ -88,7 +88,7 @@ public partial class Customer : BreadStacker
         public void OnEnter()
         {
             OnEnter_SetDestination();
-
+            Counter.Instance.packingLine.EnqueueCustomer(customer);
         }
         public bool EvaluateCompleteCondition()
         {
@@ -108,7 +108,6 @@ public partial class Customer : BreadStacker
         {
             customer.UIManager.SetActiveUI(UIType.PAY, true);
             customer.transform.rotation = Quaternion.LookRotation(Vector3.back);
-            Counter.Instance.packingLine.EnqueueCustomer(customer);
         }
         private void OnEnter_SetDestination()
         {
@@ -238,6 +237,7 @@ public partial class Customer : BreadStacker
         public void OnEnter()
         {
             Vector3 dest = Counter.Instance.tableLine.GetPosToWait();
+            Counter.Instance.tableLine.EnqueueCustomer(customer);
             customer.AINavMoveToward(dest);
         }
         public bool EvaluateCompleteCondition()
@@ -248,6 +248,7 @@ public partial class Customer : BreadStacker
         public void OnReached()
         {
             customer.UIManager.SetActiveUI(UIType.TABLE, true);
+            customer.transform.rotation = Quaternion.LookRotation(Counter.Instance.transform.position);
         }
         public void OnComplete()
         {
@@ -268,6 +269,7 @@ public partial class Customer : BreadStacker
             table = TableManager.Instance.GetTableAvailable();
             table.IsAvailable = false;
             customer.AINavMoveToward(table.ChairPos.position);
+            
         }
         public bool EvaluateCompleteCondition()
         {
@@ -281,7 +283,7 @@ public partial class Customer : BreadStacker
         {
             customer.transform.rotation = Quaternion.Euler(0, 180, 0);
             customer.anim.SetBool("isSitting",true);
-            // 앉는 애니메이션으로 변경
+            customer.UIManager.OffAllUI();
         }
         public void OnComplete()
         {
@@ -289,7 +291,14 @@ public partial class Customer : BreadStacker
             table.OnEndEatingTable(customer);
         }
 
-
+        private void OnComplete_ResetBread()
+        {
+            for(int i = 0; i < customer.StackCount; i++)
+            {
+                Bread bread = customer.PopBread();
+                BreadPoolManager.Instance.ReturnBread(bread);
+            }
+        }
     }
 
     public class GoBack : CustomerNeeds
