@@ -15,6 +15,8 @@ public class GameManager : Singleton<GameManager>
     public ResourceManager<ParticleSystem> VFXManager = new ResourceManager<ParticleSystem>("VFX");
     public ResourceManager<AudioClip> SFXManager = new ResourceManager<AudioClip>("SFX");
 
+    public bool IsGameStop { get; set; }
+
     void SetCustomer()
     {
         if (DestinationManager.Instance.GetSaleShelvesWaitingPos() != null)
@@ -49,7 +51,9 @@ public class GameManager : Singleton<GameManager>
     IEnumerator CorPointUnlockCam(GameObject obj)
     {
         obj.SetActive(true);
+        IsGameStop = true;
         yield return new WaitForSeconds(pointDuration);
         obj.SetActive(false);
+        IsGameStop = false;
     }
 }

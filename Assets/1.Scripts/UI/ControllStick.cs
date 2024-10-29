@@ -46,22 +46,31 @@ public class ControllStick : MonoBehaviour,  IDragHandler, IEndDragHandler, IBeg
 
     public void OnBeginDrag(PointerEventData pointer)
     {
-        controller.SetActive(true);
-        // 클릭된 부분으로 컨트롤 스틱 UI 위치 이동
-        rect.position = pointer.position;
+        if (!GameManager.Instance.IsGameStop)
+        {
+            controller.SetActive(true);
+            // 클릭된 부분으로 컨트롤 스틱 UI 위치 이동
+            rect.position = pointer.position;
+        }
     }
 
     public void OnDrag(PointerEventData pointer)
     {
-        SetStickVector(pointer);
+        if (!GameManager.Instance.IsGameStop)
+        {
+            SetStickVector(pointer);
+        }
         
     }
 
     public void OnEndDrag(PointerEventData pointer)
     {
-        inputVector = Vector2.zero;
+        if (!GameManager.Instance.IsGameStop)
+        {
+            inputVector = Vector2.zero;
 
-        stick.anchoredPosition = Vector2.zero;
-        controller.SetActive(false);
+            stick.anchoredPosition = Vector2.zero;
+            controller.SetActive(false);
+        }
     }
 }
