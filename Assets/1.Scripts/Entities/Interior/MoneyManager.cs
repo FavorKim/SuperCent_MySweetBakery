@@ -68,7 +68,7 @@ public class MoneyManager : MonoBehaviour
             OnTutorialClear.Invoke();
         isLerping = true;
         var money = moneyStack.Pop();
-        Vector3 destPos = transform.position + Vector3.up * 5;
+        Vector3 destPos = transform.position + Vector3.up * 3;
 
         while ((money.transform.position - destPos).sqrMagnitude > 0.1f)
         {

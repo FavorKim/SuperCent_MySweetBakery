@@ -4826,6 +4826,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: UnLockPlace1
       objectReference: {fileID: 0}
+    - target: {fileID: 8260707531788058968, guid: c6050c173b9a16049ab7223dadc19139, type: 3}
+      propertyPath: lerpDelay
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 8260707531788058968, guid: c6050c173b9a16049ab7223dadc19139, type: 3}
+      propertyPath: lerpSpeed
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6050c173b9a16049ab7223dadc19139, type: 3}
 --- !u!1 &4298803797360050899
@@ -4998,6 +5006,14 @@ PrefabInstance:
     - target: {fileID: 2259910703475548955, guid: 7dc5875597cb9424088f1231017ad193, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6914326698767539288, guid: 7dc5875597cb9424088f1231017ad193, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6914326698767539288, guid: 7dc5875597cb9424088f1231017ad193, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 3.77
       objectReference: {fileID: 0}
     - target: {fileID: 7819088244587769543, guid: 7dc5875597cb9424088f1231017ad193, type: 3}
       propertyPath: m_IsActive

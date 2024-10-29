@@ -15,8 +15,8 @@ public class LockedPlace : MonoBehaviour
 
     private StringBuilder goldRemainingSb;
 
-    private float lerpDelay = 0.03f;
-    private float lerpSpeed = 50.0f;
+    private float lerpDelay = 0.00f;
+    private float lerpSpeed = 20.0f;
     private bool isLerping = false;
 
     [SerializeField] private int goldToUnlock = 30;
@@ -75,8 +75,8 @@ public class LockedPlace : MonoBehaviour
     {
         isLerping = true;
         var money = MoneyPoolManager.Instance.GetMoney();
-        money.transform.position = lerpPos.transform.position;
-        Vector3 destPos = lerpPos.position + Vector3.up * 5;
+        money.transform.position = DestinationManager.Instance.GetPlayerPos().position + Vector3.up * 3;
+        Vector3 destPos = lerpPos.position;
 
         while ((money.transform.position - destPos).sqrMagnitude > 0.1f)
         {
@@ -88,7 +88,6 @@ public class LockedPlace : MonoBehaviour
         MoneyModel.Instance.MinusGold(1);
 
         GoldPaid = GoldPaid + 1;
-        yield return new WaitForSeconds(lerpDelay);
         isLerping = false;
     }
 

@@ -7,6 +7,12 @@ public class DestinationManager : Singleton<DestinationManager>
 {
     [SerializeField] private SaleShelves shelves;
     [SerializeField] private Transform entrance;
+    private Transform playerPos;
+
+    protected override void OnStart()
+    {
+        playerPos = FindObjectOfType<PlayerController>().transform;
+    }
     public WaitingPosition GetSaleShelvesWaitingPos()
     {
         WaitingPosition dest = shelves.GetWaitingPositionAvailable();
@@ -29,4 +35,5 @@ public class DestinationManager : Singleton<DestinationManager>
     {
         return entrance.position;
     }
+    public Transform GetPlayerPos() { return playerPos; }
 }

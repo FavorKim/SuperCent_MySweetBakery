@@ -150,8 +150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0e8090a7f3bfd44391dab9c293a8f61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objToEnable: {fileID: 1837054533814031440}
-  objToDisable: {fileID: 6364001463996090169}
+  objToEnable: {fileID: 0}
+  objToDisable: {fileID: 0}
   goldRemaining: {fileID: 1355948937}
   lerpPos: {fileID: 577566898}
   goldToUnlock: 100
