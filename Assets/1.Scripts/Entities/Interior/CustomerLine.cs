@@ -53,7 +53,7 @@ public class CustomerLine : MonoBehaviour
             {
                 customers.Dequeue();
             }
-            if(customers.Count >0)
+            if(customers.Count > 0)
             {
                 customer = customers.Peek();
                 customer.isReady = true;

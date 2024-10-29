@@ -95,7 +95,7 @@ public partial class Customer : BreadStacker
         }
         public bool EvaluateCompleteCondition()
         {
-            return Counter.Instance.isPayable && customer.isReady;
+            return Counter.Instance.isPayable && customer.IsReached && customer.isReady;
         }
         public void OnReached()
         {
@@ -119,35 +119,37 @@ public partial class Customer : BreadStacker
             customer.transform.rotation = Quaternion.LookRotation(posToWait);
         }
     }
-    public class NeedPacking : CustomerNeeds
-    {
-        private Customer customer;
-        public NeedPacking(Customer customer)
-        {
-            this.customer = customer;
-        }
 
-        public void OnEnter()
-        {
+    //public class NeedPacking : CustomerNeeds
+    //{
+    //    private Customer customer;
+    //    public NeedPacking(Customer customer)
+    //    {
+    //        this.customer = customer;
+    //    }
 
-        }
-        public bool EvaluateCompleteCondition()
-        {
-            return customer.IsReached;
-        }
-        public void OnReached()
-        {
+    //    public void OnEnter()
+    //    {
 
-        }
+    //    }
+    //    public bool EvaluateCompleteCondition()
+    //    {
+    //        return customer.IsReached;
+    //    }
+    //    public void OnReached()
+    //    {
 
-        public void OnComplete()
-        {
+    //    }
 
-        }
+    //    public void OnComplete()
+    //    {
+
+    //    }
 
 
 
-    }
+    //}
+
     public class IsPacking : CustomerNeeds
     {
         private Customer customer;

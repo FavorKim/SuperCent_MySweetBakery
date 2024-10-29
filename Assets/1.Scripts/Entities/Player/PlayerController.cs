@@ -113,7 +113,7 @@ public class PlayerController : BreadStacker
     {
         if(other.TryGetComponent(out SaleShelves shelves))
         {
-            shelves.IsCustomerUsable = false;
+            shelves.IsCustomerUsable = true;
         }
     }
 

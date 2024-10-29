@@ -156,7 +156,7 @@ public partial class Customer : BreadStacker
     {
         needsManager.EnqueueNeeds(new NeedBread(this));
         needsManager.EnqueueNeeds(new NeedPay(this));
-        needsManager.EnqueueNeeds(new NeedPacking(this));
+        //needsManager.EnqueueNeeds(new NeedPacking(this));
         needsManager.EnqueueNeeds(new IsPacking(this));
         needsManager.EnqueueNeeds(new GoBack(this));
     }
