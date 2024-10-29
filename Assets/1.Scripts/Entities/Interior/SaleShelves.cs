@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class WaitingPosition
 {
@@ -40,6 +41,12 @@ public class SaleShelves : MonoBehaviour
 
     private Stack<Bread> breadStacks = new Stack<Bread>();
 
+    private UnityEvent OnTutorialClear = new UnityEvent();
+
+    private void Awake()
+    {
+        TutorialArrowController.Instance.AddCondition(OnTutorialClear, 1);
+    }
 
     private void InitWaitingPositions()
     {
@@ -73,6 +80,9 @@ public class SaleShelves : MonoBehaviour
         {
             breadStacks.Push(bread);
             bread.transform.SetParent(firstPos);
+
+            if (TutorialArrowController.Instance.CurrentTutorialLevel == 2)
+                OnTutorialClear.Invoke();
         }
     }
 
@@ -101,4 +111,6 @@ public class SaleShelves : MonoBehaviour
     {
         return breadStacks.Count < maxStoreCount;
     }
+
+    
 }

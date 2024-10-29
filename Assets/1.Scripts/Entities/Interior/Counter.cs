@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Counter : Singleton<Counter>
 {
@@ -11,16 +12,23 @@ public class Counter : Singleton<Counter>
     public CustomerLine packingLine;
     public CustomerLine tableLine;
 
+    private UnityEvent OnTutorialClear = new UnityEvent();
 
     public bool isPayable = false;
 
+    protected override void OnAwake()
+    {
+        TutorialArrowController.Instance.AddCondition(OnTutorialClear, 2);
+    }
 
-    
+
     public void Packing_Pay(Customer customer)
     {
         int price = customer.GetPriceToPay();
         moneyManager.InstanceMoney(price);
         packingLine.IsStop = false;
+        if (TutorialArrowController.Instance.CurrentTutorialLevel == 3)
+            OnTutorialClear.Invoke();
     }
 
 

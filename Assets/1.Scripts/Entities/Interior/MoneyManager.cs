@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MoneyManager : MonoBehaviour
 {
@@ -15,6 +16,13 @@ public class MoneyManager : MonoBehaviour
 
     private bool isEarning = false;
     private bool isLerping = false;
+
+    private UnityEvent OnTutorialClear = new UnityEvent();
+
+    private void Awake()
+    {
+        TutorialArrowController.Instance.AddCondition(OnTutorialClear, 3);
+    }
 
     public void InstanceMoney(int price)
     {
@@ -47,6 +55,8 @@ public class MoneyManager : MonoBehaviour
 
     private IEnumerator CorEarnMoney()
     {
+        if (TutorialArrowController.Instance.CurrentTutorialLevel == 4)
+            OnTutorialClear.Invoke();
         isLerping = true;
         var money = moneyStack.Pop();
         Vector3 destPos = transform.position + Vector3.up * 5;

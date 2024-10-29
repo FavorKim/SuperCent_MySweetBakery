@@ -38,6 +38,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
             instance = this.GetComponent<T>();
             DontDestroyOnLoad(instance);
         }
+        OnStart();
     }
     protected void Awake()
     {
@@ -46,4 +47,5 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
 
     protected virtual void OnAwake() { }
+    protected virtual void OnStart() { }
 }

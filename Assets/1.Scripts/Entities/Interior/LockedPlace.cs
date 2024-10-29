@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class LockedPlace : MonoBehaviour
 {
@@ -37,6 +38,12 @@ public class LockedPlace : MonoBehaviour
             goldPaid.SetGold(value);
             OnGoldPaid();
         }
+    }
+
+    private UnityEvent OnTutorialClear = new UnityEvent();
+    private void Awake()
+    {
+        TutorialArrowController.Instance.AddCondition(OnTutorialClear, 4);
     }
     private void Start()
     {
@@ -85,6 +92,8 @@ public class LockedPlace : MonoBehaviour
 
     private void UnlockObject()
     {
+        if (TutorialArrowController.Instance.CurrentTutorialLevel == 5)
+            OnTutorialClear.Invoke();
         objToEnable.SetActive(true);
         objToDisable.SetActive(false);
     }
