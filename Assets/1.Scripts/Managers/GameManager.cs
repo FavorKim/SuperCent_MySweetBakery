@@ -12,8 +12,15 @@ public class GameManager : Singleton<GameManager>
 
     void SetCustomer()
     {
-        var customer = CustomerPoolManager.Instance.GetCustomer();
-        customer.OnStartCustomerAI();
+        if (DestinationManager.Instance.GetSaleShelvesWaitingPos() != null)
+        {
+            var customer = CustomerPoolManager.Instance.GetCustomer();
+            customer.OnStartCustomerAI();
+        }
+        else
+        {
+            Debug.LogError("웨이팅이 너무 많아서 손님이 나오지 않음");
+        }
         delayedTime = 0;
     }
 

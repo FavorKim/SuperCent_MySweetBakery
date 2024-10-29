@@ -71,10 +71,13 @@ public partial class Customer : BreadStacker
 
         private void OnComplete_Bread()
         {
-            customer.UIManager.OffAllUI();
+            if (customer.posToGo != null)
+            {
+                customer.UIManager.OffAllUI();
 
-            customer.posToGo.SetAvailable(true);
-            customer.posToGo = null;
+                customer.posToGo.SetAvailable(true);
+                customer.posToGo = null;
+            }
         }
     }
     public class NeedPay : CustomerNeeds

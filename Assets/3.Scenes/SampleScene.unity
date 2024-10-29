@@ -1740,7 +1740,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7a5ed3bfd6d2834f97a6a66ab6e76d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entranceTime: 10
+  entranceTime: 5
 --- !u!4 &805269008
 Transform:
   m_ObjectHideFlags: 0
