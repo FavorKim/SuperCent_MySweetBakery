@@ -83,6 +83,7 @@ public class LockedPlace : MonoBehaviour
             money.transform.position = Vector3.Slerp(money.transform.position, destPos, Time.deltaTime * lerpSpeed);
             yield return null;
         }
+
         money.transform.position = destPos;
         MoneyPoolManager.Instance.ReturnMoney(money);
         MoneyModel.Instance.MinusGold(1);
