@@ -19,7 +19,7 @@ public class Counter : Singleton<Counter>
     private bool isPayable = false;
     public bool IsPayable
     {
-        get { return IsPayable; }
+        get { return isPayable; }
         set
         {
             if (isPayable != value)
