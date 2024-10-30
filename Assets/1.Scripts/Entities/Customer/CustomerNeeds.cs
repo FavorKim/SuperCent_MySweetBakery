@@ -295,20 +295,22 @@ public partial class Customer : BreadStacker
         public void OnReached()
         {
             customer.transform.rotation = Quaternion.LookRotation(Vector3.back);
-            customer.anim.SetBool("isSitting",true);
+            customer.anim.SetBool("isSitting", true);
             customer.UIManager.OffAllUI();
         }
         public void OnComplete()
         {
             customer.anim.SetBool("isSitting", false);
             table.OnEndEatingTable(customer);
+            OnComplete_ResetBread();
         }
 
         private void OnComplete_ResetBread()
         {
-            for(int i = 0; i < customer.StackCount; i++)
+            while (true)
             {
                 Bread bread = customer.PopBread();
+                if (bread == null) break;
                 BreadPoolManager.Instance.ReturnBread(bread);
             }
         }
