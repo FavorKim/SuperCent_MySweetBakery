@@ -426,7 +426,7 @@ MonoBehaviour:
   Trash: {fileID: 7004695234583274}
   moneyManager: {fileID: 4725797233164985992}
   VFXPos: {fileID: 5206688447571965494}
-  chairPos: {fileID: 2260988392512545525}
+  chairPos: {fileID: 7754474352437756303}
 --- !u!65 &923700936705622194
 BoxCollider:
   m_ObjectHideFlags: 0

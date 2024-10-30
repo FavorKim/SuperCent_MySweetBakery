@@ -49,6 +49,7 @@ public class Table : MonoBehaviour
     {
         Trash.SetActive(true);
         InstanceMoney(customer);
+        SetChair(false);
     }
     public void OnCleanTable()
     {
@@ -56,6 +57,7 @@ public class Table : MonoBehaviour
         IsAvailable = true;
         VFX_Clean.Play();
         PlayTrashSFX();
+        SetChair(true);
     }
 
     private void PlayTrashSFX()
@@ -76,5 +78,11 @@ public class Table : MonoBehaviour
             if (Trash.activeSelf == true)
                 OnCleanTable();
         }
+    }
+    private void SetChair(bool isClean)
+    {
+        float targetRotY = isClean ? 0 : 40;
+        Vector3 targetRot = new Vector3(0, targetRotY, 0);
+        ChairPos.parent.localRotation = Quaternion.Euler(targetRot);
     }
 }
