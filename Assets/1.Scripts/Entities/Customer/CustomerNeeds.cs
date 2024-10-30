@@ -265,6 +265,7 @@ public partial class Customer : BreadStacker
         }
         public void OnComplete()
         {
+            Counter.Instance.tableLine.RePosCustomers();
             Counter.Instance.tableLine.Queueing();
         }
     }

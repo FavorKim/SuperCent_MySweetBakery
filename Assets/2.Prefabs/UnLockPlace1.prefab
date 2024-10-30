@@ -2773,7 +2773,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 223695983763640151, guid: 9f575998169815643b48fe2104c37d66, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.7699999
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 223695983763640151, guid: 9f575998169815643b48fe2104c37d66, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2851,12 +2851,21 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: 0.79
       objectReference: {fileID: 0}
+    - target: {fileID: 7606833714328790001, guid: 9f575998169815643b48fe2104c37d66, type: 3}
+      propertyPath: chairPos
+      value: 
+      objectReference: {fileID: 1580418497949057962}
     - target: {fileID: 8396759298357474804, guid: 9f575998169815643b48fe2104c37d66, type: 3}
       propertyPath: m_Name
       value: Table
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f575998169815643b48fe2104c37d66, type: 3}
+--- !u!4 &1580418497949057962 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7754474352437756303, guid: 9f575998169815643b48fe2104c37d66, type: 3}
+  m_PrefabInstance: {fileID: 9111814585070633509}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9036773202649550194 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 223695983763640151, guid: 9f575998169815643b48fe2104c37d66, type: 3}

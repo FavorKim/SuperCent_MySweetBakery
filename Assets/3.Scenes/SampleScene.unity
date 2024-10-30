@@ -5029,14 +5029,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: UnLockPlace1
       objectReference: {fileID: 0}
-    - target: {fileID: 8260707531788058968, guid: c6050c173b9a16049ab7223dadc19139, type: 3}
-      propertyPath: lerpDelay
-      value: 0.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 8260707531788058968, guid: c6050c173b9a16049ab7223dadc19139, type: 3}
-      propertyPath: lerpSpeed
-      value: 20
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6050c173b9a16049ab7223dadc19139, type: 3}
 --- !u!1 &4298803797360050899
