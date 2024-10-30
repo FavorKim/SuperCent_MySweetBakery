@@ -43,4 +43,9 @@ public class TutorialInfo
     {
         return havePointedList[index-1];
     }
+
+    public void ResetInfo()
+    {
+        instance = null;
+    }
 }

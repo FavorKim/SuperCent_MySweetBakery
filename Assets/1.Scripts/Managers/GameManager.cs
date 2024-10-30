@@ -62,5 +62,6 @@ public class GameManager : Singleton<GameManager>
     {
         MoneyModel.Instance.MinusGold(99999999);
         UnlockPlaceGold.Instances.Clear();
+        TutorialInfo.Instance.ResetInfo();
     }
 }
