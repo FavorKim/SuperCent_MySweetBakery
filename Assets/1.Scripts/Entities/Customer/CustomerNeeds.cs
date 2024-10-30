@@ -95,7 +95,7 @@ public partial class Customer : BreadStacker
         }
         public bool EvaluateCompleteCondition()
         {
-            return Counter.Instance.isPayable && customer.IsReached && customer.isReady;
+            return Counter.Instance.IsPayable && customer.IsReached && customer.isReady;
         }
         public void OnReached()
         {

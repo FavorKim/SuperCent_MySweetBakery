@@ -14,7 +14,21 @@ public class Counter : Singleton<Counter>
 
     private UnityEvent OnTutorialClear = new UnityEvent();
 
-    public bool isPayable = false;
+    [SerializeField] private Animator footStep;
+
+    private bool isPayable = false;
+    public bool IsPayable
+    {
+        get { return IsPayable; }
+        set
+        {
+            if (isPayable != value)
+            {
+                isPayable = value;
+                footStep.SetBool("isPayable", isPayable);
+            }
+        }
+    }
 
     protected override void OnAwake()
     {
@@ -35,14 +49,14 @@ public class Counter : Singleton<Counter>
     {
         if (other.TryGetComponent(out PlayerController player))
         {
-            isPayable = true;
+            IsPayable = true;
         }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.TryGetComponent(out PlayerController player))
         {
-            isPayable = false;
+            IsPayable = false;
         }
     }
 
