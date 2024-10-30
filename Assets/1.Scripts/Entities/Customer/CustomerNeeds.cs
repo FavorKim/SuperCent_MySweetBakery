@@ -16,6 +16,7 @@ public partial class Customer : BreadStacker
         public NeedBread(Customer customer)
         {
             this.customer = customer;
+
         }
 
         public void OnEnter()

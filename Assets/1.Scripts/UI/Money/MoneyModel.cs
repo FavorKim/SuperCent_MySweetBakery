@@ -27,6 +27,8 @@ public class MoneyModel
     public void MinusGold(int goldMinus)
     {
         goldCount -= goldMinus;
+        if(goldCount<0)
+            goldCount = 0;
         OnPlusGold?.Invoke(goldCount);
     }
 

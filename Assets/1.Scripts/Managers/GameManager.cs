@@ -1,12 +1,13 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private GameObject PointCam_Unlock1;
     [SerializeField] private GameObject PointCam_Unlock2;
     private float pointDuration = 1.5f;
-
 
     [SerializeField] private float entranceTime = 15.0f;
     private float delayedTime = 15.0f;
@@ -54,5 +55,12 @@ public class GameManager : Singleton<GameManager>
         yield return new WaitForSeconds(pointDuration);
         obj.SetActive(false);
         IsGameStop = false;
+    }
+
+
+    public void ResetData()
+    {
+        MoneyModel.Instance.MinusGold(99999999);
+        UnlockPlaceGold.Instances.Clear();
     }
 }

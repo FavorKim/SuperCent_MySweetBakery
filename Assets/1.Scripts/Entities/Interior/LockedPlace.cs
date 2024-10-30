@@ -45,6 +45,7 @@ public class LockedPlace : MonoBehaviour
     {
         TutorialArrowController.Instance.AddCondition(OnTutorialClear, 4);
         VFX_AppearSignStand = GameManager.Instance.VFXManager.GetResource("VFX_AppearSignStand");
+
     }
     private void Start()
     {
@@ -127,4 +128,5 @@ public class LockedPlace : MonoBehaviour
         if (GoldPaid >= goldToUnlock)
             UnlockObject();
     }
+
 }

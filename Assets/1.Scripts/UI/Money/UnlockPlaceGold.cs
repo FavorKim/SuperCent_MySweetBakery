@@ -16,6 +16,11 @@ public class UnlockPlaceGold
 
     public event Action<int> OnSetGold;
 
+    public static Dictionary<LockedPlace, UnlockPlaceGold> Instances
+    {
+        get { return instances; }
+    }
+
     public void SetGold(int goldPaid)
     {
         this.goldPaid = goldPaid;
